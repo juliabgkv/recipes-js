@@ -11,8 +11,14 @@ module.exports = {
     mode,
     target,
     devtool: 'source-map',
-    devServer: { open: true },
-    entry: ["@babel/polyfill", path.resolve(__dirname, 'src', 'index.js')],
+    devServer: { 
+        open: true,
+        port: 3000
+    },
+    entry: {
+        home: './src/index.js',
+        recipe: './src/recipe/recipe.js'
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
         clean: true,
@@ -20,12 +26,24 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src', 'index.html')
+            title: 'Home',
+            filename: 'index.html',
+            template: path.resolve(__dirname, 'src', 'index.html'),
+            chunks: ['home']
+        }),
+        new HtmlWebpackPlugin({
+            title: 'Recipe',
+            filename: 'recipe.html',
+            template: path.resolve(__dirname, 'src/recipe', 'recipe.html'),
+            chunks: ['recipe']
         }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css'
         })
     ],
+    optimization: {
+        runtimeChunk: 'single',
+    },
     module: {
         rules: [
             {
