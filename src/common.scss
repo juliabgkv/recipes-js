@@ -3,3 +3,31 @@
 @import './styles/typography';
 @import './libs/normalize';
 
+html, body, * { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.topbar {
+    @include flexible();
+    justify-content: space-between;
+    align-items: center;
+    padding: .8rem 1.5rem;
+    border-bottom: 1px solid #919191;
+    background-color: $light-color;
+
+    .saved-link {
+        display: block;
+        @include icon-btn("../../assets/icons8-favorites-64.png");
+        padding-left: 30px;
+    }
+    .logo {
+        font-family: $logo-font;
+        color: $dark-color;
+        font-size: 4rem;
+        text-decoration: none;
+        margin: 5px 0 0 20px;
+        display: block;
+    }
+}

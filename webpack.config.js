@@ -35,12 +35,12 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: 'recipe.html',
             template: './src/pages/recipe/recipe.html',
-            chunks: ['recipe']
+            chunks: ['common', 'recipe']
         }),
         new HtmlWebpackPlugin({
             filename: 'saved.html',
             template: './src/pages/saved/saved.html',
-            chunks: ['saved']
+            chunks: ['common', 'saved']
         }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css'

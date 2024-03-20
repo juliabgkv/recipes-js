@@ -9,6 +9,7 @@ const noResMessage = document.getElementById('noResMessage');
 const searchResTemplate = document.getElementById('searchResTemplate');
 let resCount = 0;
 
+init();
 
 document.getElementById('openFormBtn').addEventListener('click', openFormBtnClickHandler);
 document.getElementById('closeFormBtn').addEventListener('click', closeForm);
@@ -17,12 +18,12 @@ backdrop.addEventListener('click', closeForm);
 searchInp.addEventListener('keyup', searchKeyUpHandler);
 searchForm.addEventListener('submit', e => {
     e.preventDefault();
-
-    if(resCount) showAllSearchResultsHandler();
+    showAllSearchResultsHandler();
 });
 
 
-// event handlers
+// ------- event handlers -------
+
 function openFormBtnClickHandler() {
     backdrop.classList.add('active');
     searchForm.classList.add('active');
@@ -40,34 +41,17 @@ function showAllSearchResultsHandler() {
 
     insertUrlParam('name', q);
 
-    // redirect if not on index page
-
     if(q) {
         fetch(`https://dummyjson.com/recipes/search?q=${q}`)
             .then(res => res.json())
             .then(data => {
-
                 const recipes = data.recipes.map(({ id, name, image, rating, reviewCount }) => { 
                     return { id, name, image, rating, reviewCount };
                 });
 
-                if(recipes.length) {
-                    data.recipes.map(r => {
-                        const recipeCardTemplate = document.getElementById('recipeCardTemplate');
-                        const clone = recipeCardTemplate.content.cloneNode(true);
-
-                        clone.querySelector('.recipe-card').setAttribute('href', `./recipe.html?recipe-id=${r.id}`);
-                        clone.querySelector('.card-photo').setAttribute('src', r.image);
-                        clone.querySelector('.card-photo').setAttribute('alt', r.name);
-                        clone.querySelector('.card-description-name').innerText = r.name;
-                        clone.querySelector('.card-description-rating').innerText = r.rating;
-
-                        recipesContainer.appendChild(clone);
-                    });
-                } else {
-                    recipesContainer.innerText = `Nothing found for your query "${searchInp.value.trim()}"...`;
-                }
-            });
+                renderRecipes(recipes);
+            })
+            .catch(error => console.error(error));
     }
 }
 function searchKeyUpHandler() {
@@ -80,15 +64,64 @@ function searchKeyUpHandler() {
                 const recipes = data.recipes.map(({ id, name, image }) => { 
                     return { id, name, image };
                 });
-                showPreviewSearchResults(recipes);
+
+                if(recipes.length) showPreviewSearchResults(recipes);
+                else recipesContainer.innerText = 'No Results...';
             })
             .catch(error => console.error(error));
+    } else {
+        searchResult.innerHTML = '';
     }
 }
 
 
-// other functions
+// ------- other functions -------
 
+function init() {
+    fetch('https://dummyjson.com/recipes?limit=0')
+    .then(res => res.json())
+    .then(data => {
+        // render recipes list
+        const recipes = data.recipes.map(({ id, name, image, rating, reviewCount }) => { 
+            return { id, name, image, rating, reviewCount };
+        });
+
+        renderRecipes(recipes);
+
+        // get all meal types
+        const arr = data.recipes.map(r => r.mealType);
+        let foodTypes = new Set(arr.flat());
+
+        // append in html
+        for(let type of foodTypes) {
+            const liEl = document.createElement('li');
+            liEl.innerText = type;
+            categories.appendChild(liEl);
+        }
+
+        // get all cuisines
+        const arrCus = data.recipes.map(r => r.cuisine);
+        let cuisines = new Set(arrCus);
+        
+        for(let cuisine of cuisines) {
+            const liEl = document.createElement('li');
+            liEl.innerText = cuisine;
+            document.getElementById('cuisines').appendChild(liEl);
+        }
+    })
+    .catch(error => console.error(error));
+
+
+    fetch('https://dummyjson.com/recipes/tags')
+        .then(res => res.json())
+        .then(data => {
+            data.map(d => {
+                const liEl = document.createElement('li');
+                liEl.innerText = d;
+                document.getElementById('tags').appendChild(liEl);
+            });
+        });
+}
 function showPreviewSearchResults(recipes) {
     searchResult.innerHTML = '';
     noResMessage.classList.remove('active');
@@ -122,4 +155,20 @@ function insertUrlParam(key, value) {
         let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + searchParams.toString();
         window.history.pushState({path: newurl}, '', newurl);
     }
+}
+function renderRecipes(recipes) {
+    recipesContainer.innerHTML = '';
+
+    recipes.map(r => {
+        const recipeCardTemplate = document.getElementById('recipeCardTemplate');
+        const clone = recipeCardTemplate.content.cloneNode(true);
+
+        clone.querySelector('.recipe-card').setAttribute('href', `./recipe.html?recipe-id=${r.id}`);
+        clone.querySelector('.card-photo').setAttribute('src', r.image);
+        clone.querySelector('.card-photo').setAttribute('alt', r.name);
+        clone.querySelector('.card-description-name').innerText = r.name;
+        clone.querySelector('.card-description-rating').innerText = r.rating;
+
+        recipesContainer.appendChild(clone);
+    });
 }
