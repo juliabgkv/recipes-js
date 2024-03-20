@@ -1,0 +1,24 @@
+@import './variables';
+
+@mixin flexible() {
+    display: flex;
+}
+@mixin icon-btn($url) {
+    width: $icon-btn-size;
+    height: $icon-btn-size;
+    background-image: url($url);
+    background-size: $icon-btn-size $icon-btn-size;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: .6;
+    cursor: pointer;
+    transition: opacity .15s ease-in-out;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+@mixin reset-btn() {
+    border: none;
+    background-color: transparent;
+}

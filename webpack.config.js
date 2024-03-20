@@ -13,11 +13,13 @@ module.exports = {
     devtool: 'source-map',
     devServer: { 
         open: true,
-        port: 3000
+        port: 8081
     },
     entry: {
-        home: './src/index.js',
-        recipe: './src/recipe/recipe.js'
+        common: './src/common.js', 
+        home: './src/pages/index/index.js',
+        recipe: './src/pages/recipe/recipe.js',
+        saved: './src/pages/saved/saved.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -26,24 +28,24 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Home',
             filename: 'index.html',
-            template: path.resolve(__dirname, 'src', 'index.html'),
-            chunks: ['home']
+            template: './src/pages/index/index.html',
+            chunks: ['common', 'home']
         }),
         new HtmlWebpackPlugin({
-            title: 'Recipe',
             filename: 'recipe.html',
-            template: path.resolve(__dirname, 'src/recipe', 'recipe.html'),
+            template: './src/pages/recipe/recipe.html',
             chunks: ['recipe']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'saved.html',
+            template: './src/pages/saved/saved.html',
+            chunks: ['saved']
         }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css'
         })
     ],
-    optimization: {
-        runtimeChunk: 'single',
-    },
     module: {
         rules: [
             {

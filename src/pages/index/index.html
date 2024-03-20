@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reciptoria | Home Page</title>
+</head>
+<body>
+    <header class="topbar">
+        <div class="menu-toggler"></div>
+        <div class="search-wrapper">
+            <button id="openFormBtn" class="search-btn" title="Search"></button>
+            <form id="searchForm" class="search-form">
+                <button class="submit-btn" title="Search"></button>
+                <input type="text" id="searchInp" placeholder="Type to search recipes..." autocomplete="off">
+                <button type="button" id="closeFormBtn" class="close-btn" title="Close"></button>
+            </form>
+            <div class="search-result">
+                <div id="searchResult" class="search-result-container"></div>
+                <div id="noResMessage" class="no-result-message">No results...</div>
+                <button id="showAllBtn" class="show-all-btn">Show All Results (<span id="resultsCount">0</span>)</button>
+            </div>
+        </div>
+        <div id="backdrop" class="backdrop"></div>
+        <div class="right-side">
+            <a href="./saved.html" title="Favorites" class="saved-link"></a>
+            <a href="./index.html" class="logo">Reciptoria</a>
+        </div>
+    </header>
+    <section class="catalog-wrapper">
+        <nav class="menu">
+            <div>
+                <h3 class="category-title">Meal Type:</h3>
+                <ul id="categories" class="categories-list"></ul>
+            </div>
+            <div>
+                <h3 class="category-title">Tags:</h3>
+                <ul id="tags" class="tags-list"></ul>
+            </div>
+        </nav>
+        <div id="recipesContainer" class="recipes-container"></div>
+    </section>
+    <footer>
+        
+    </footer>
+
+
+    <template id="recipeCardTemplate">
+        <a href="#" class="recipe-card">
+            <img class="card-photo">
+            <div class="card-description">
+                <h4 class="card-description-name"></h4>
+                <div class="card-description-rating"></div>
+            </div>
+        </a>
+    </template>
+    <template id="searchResTemplate">
+        <a href="#" class="result-item">
+            <img src="#" alt="" class="result-item-img">
+            <p class="result-item-name">Pizza</p>
+        </a>
+    </template>
+</body>
+</html>
