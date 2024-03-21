@@ -83,7 +83,7 @@
                     .result-item {
                         font-family: $secondary-font;
                         text-decoration: none;
-                        color: #131313;
+                        color: $dark-color;
                         display: flex;
                         align-items: center;
                         overflow: hidden;
@@ -125,7 +125,7 @@
                     font-weight: 500;
                     padding: 10px 20px;
                     margin: 10px auto 15px;
-                    border-radius: 5px;
+                    border-radius: $border-radius;
                     cursor: pointer;
                     transition: .2s cubic-bezier(0.075, 0.82, 0.165, 1);
     
@@ -172,14 +172,9 @@
             transition: .1s ease-in;
 
             &.active {
-                border-radius: 5px;
+                border-radius: $border-radius;
                 background-color:  $accent-color;
                 color: $light-color;
-                // 
-
-
-
-
             }
             &:hover {
                 border-color: $accent-color;
@@ -208,6 +203,8 @@
         transition: .2s ease-in;
 
         .recipe-card {
+            overflow: hidden;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -217,6 +214,29 @@
             box-shadow: 0px 0px 5px 0px rgb(209, 209, 209);
             transition: .1s cubic-bezier(0.165, 0.84, 0.44, 1);
     
+            .save-btn {
+                width: 35px;
+                height: 40px;
+                background-color: $light-color;
+                background-image: url("../../assets/icons8-favorite-50.png");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 25px 25px;
+                border-radius: 0 0 $border-radius $border-radius;
+                border: none;
+                padding: 10px;
+                z-index: 50;
+                cursor: pointer;
+                position: absolute;
+                right: 5px;
+                transform: translateY(-100%);
+                transition: .2s ease-in-out;
+
+                &.saved {
+                    transform: translateY(0);
+                    background-image: url("../../assets/saved.png");
+                }
+            }
             .card-photo-wrap {
                 overflow: hidden;
                 border-radius: 5px 5px 0 0;
@@ -229,6 +249,9 @@
             &:hover {
                 box-shadow: 0px 0px 10px 0px rgb(170, 169, 169);
 
+                .save-btn {
+                    transform: translateY(0);
+                }
                 .card-photo {
                     transform: scale(1.3) rotate(10deg);
                 }
@@ -237,6 +260,7 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 padding: 0 10px 10px;
     
                 .card-description-name {

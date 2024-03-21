@@ -7,6 +7,7 @@ const backdrop = document.getElementById('backdrop');
 const searchResult = document.getElementById('searchResult');
 const noResMessage = document.getElementById('noResMessage');
 const categoriesList = document.getElementById('categories');
+const recipesContainer = document.getElementById('recipesContainer');
 const searchResTemplate = document.getElementById('searchResTemplate');
 let resCount = 0;
 
@@ -15,6 +16,7 @@ init();
 document.getElementById('openFormBtn').addEventListener('click', openFormBtnClickHandler);
 document.getElementById('closeFormBtn').addEventListener('click', closeForm);
 document.getElementById('showAllBtn').addEventListener('click', showAllSearchResultsHandler);
+recipesContainer.addEventListener('click', onRecipeClickHandler);
 backdrop.addEventListener('click', closeForm);
 categoriesList.addEventListener('click', onCategoriesListClickHandler);
 searchInp.addEventListener('keyup', delay(searchKeyUpHandler, 500)); // delay for executing function after the user has stoppes typing
@@ -53,6 +55,30 @@ function showAllSearchResultsHandler() {
                 renderRecipes(recipes);
             })
             .catch(error => console.error(error));
+    }
+}
+function onRecipeClickHandler(e) {
+    const target = e.target;
+
+    if(target.classList.contains('save-btn')) {
+        e.preventDefault();
+
+        const recIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];
+
+        if(target.classList.contains('saved')) {
+            target.classList.remove('saved');
+
+            const id = target.closest('.recipe-card').id;
+            const idx = recIds.indexOf(id);
+            recIds = recIds.splice(idx, 1);
+        } else {
+            target.classList.add('saved');
+    
+            const newId = e.target.closest('.recipe-card').id;
+            recIds.push(newId);
+        }
+
+        localStorage.setItem('saved-recipes-id', JSON.stringify(recIds));
     }
 }
 function searchKeyUpHandler() {
@@ -151,17 +177,25 @@ function renderSearchResPreviewItem(recipe) {
 function renderRecipes(recipes) {
     recipesContainer.innerHTML = '';
 
+    const savedIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];
+
     recipes.map(r => {
         const recipeCardTemplate = document.getElementById('recipeCardTemplate');
         const clone = recipeCardTemplate.content.cloneNode(true);
+        const card = clone.querySelector('.recipe-card');
+        const photo = clone.querySelector('.card-photo');
 
-        clone.querySelector('.recipe-card').setAttribute('href', `./recipe.html?recipe-id=${r.id}`);
-        clone.querySelector('.card-photo').setAttribute('src', r.image);
-        clone.querySelector('.card-photo').setAttribute('alt', r.name);
+        card.setAttribute('id', r.id);
+        card.setAttribute('href', `./recipe.html?recipe-id=${r.id}`);
+        photo.setAttribute('src', r.image);
+        photo.setAttribute('alt', r.name);
         clone.querySelector('.card-description-name').innerText = r.name;
         clone.querySelector('.rating').innerText = r.rating;
         clone.querySelector('.star-inner').style.width = `${(r.rating / 5) * 100}%`;
         clone.querySelector('.review-count').innerText = `(${r.reviewCount})`;
+
+        if(savedIds.some(id => id == r.id))
+            clone.querySelector('.save-btn').classList.add('saved');
 
         recipesContainer.appendChild(clone);
     });
