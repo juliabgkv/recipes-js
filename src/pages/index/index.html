@@ -7,40 +7,33 @@
 </head>
 <body>
     <header class="topbar">
-        <div class="menu-toggler"></div>
-        <div class="search-wrapper">
-            <button id="openFormBtn" class="search-btn" title="Search"></button>
-            <form id="searchForm" class="search-form">
-                <button class="submit-btn" title="Search"></button>
-                <input type="text" id="searchInp" placeholder="Type to search recipes..." autocomplete="off">
-                <button type="button" id="closeFormBtn" class="close-btn" title="Close"></button>
-            </form>
-            <div class="search-result">
-                <div id="searchResult" class="search-result-container"></div>
-                <div id="noResMessage" class="no-result-message">No results...</div>
-                <button id="showAllBtn" class="show-all-btn">Show All Results (<span id="resultsCount">0</span>)</button>
-            </div>
-        </div>
-        <div id="backdrop" class="backdrop"></div>
-        <div class="right-side">
+        <div class="left-side">
+            <div class="menu-toggler"></div>
             <a href="./saved.html" title="Favorites" class="saved-link"></a>
-            <a href="./index.html" class="logo">Reciptoria</a>
+            <div class="search-wrapper">
+                <button id="openFormBtn" class="search-btn" title="Search"></button>
+                <form id="searchForm" class="search-form" action="/">
+                    <button class="submit-btn" title="Search"></button>
+                    <input type="text" id="searchInp" placeholder="Type to search recipes..." autocomplete="off">
+                    <button type="button" id="closeFormBtn" class="close-btn" title="Close"></button>
+                </form>
+                <div class="search-result">
+                    <div id="searchResult" class="search-result-container"></div>
+                    <div id="noResMessage" class="no-result-message">No results...</div>
+                    <button id="showAllBtn" class="show-all-btn">Show All Results (<span id="resultsCount">0</span>)</button>
+                </div>
+            </div>
+            <div id="backdrop" class="backdrop"></div>
         </div>
+        <a href="./index.html" class="logo">Reciptoria</a>
     </header>
-    <section class="tags">
-        <ul id="tags" class="tags-list"></ul>
+    <section class="categories">
+        <ul id="categories" class="categories-list">
+            <li data-category-id="all" class="category active">All</li>
+        </ul>
     </section>
-    <section class="catalog-wrapper">
-        <nav class="menu">
-            <div>
-                <h3 class="category-title">Meal Type:</h3>
-                <ul id="categories" class="categories-list"></ul>
-            </div>
-            <div>
-                <h3 class="category-title">Cuisines:</h3>
-                <ul id="cuisines" class="categories-list"></ul>
-            </div>
-        </nav>
+    <section class="recipes">
+        <div class="loader">Loading....</div>
         <div id="recipesContainer" class="recipes-container"></div>
     </section>
     <footer>
@@ -50,10 +43,18 @@
 
     <template id="recipeCardTemplate">
         <a href="#" class="recipe-card">
-            <img class="card-photo">
+            <div class="card-photo-wrap">
+                <img class="card-photo">
+            </div>
             <div class="card-description">
                 <h4 class="card-description-name"></h4>
-                <div class="card-description-rating"></div>
+                <div class="card-description-rating">
+                    <div class="star-outer">
+                        <div class="star-inner"></div>
+                    </div>
+                    <div class="rating"></div>
+                    <div class="review-count"></div>
+                </div>
             </div>
         </a>
     </template>

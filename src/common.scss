@@ -14,7 +14,7 @@ html, body, * {
     justify-content: space-between;
     align-items: center;
     padding: .8rem 1.5rem;
-    border-bottom: 1px solid #919191;
+    border-bottom: $border;
     background-color: $light-color;
 
     .saved-link {
