@@ -1,5 +1,5 @@
 @import '../../common.scss';
-
+@import '../../styles/components/loader';
 
 .topbar {
     .left-side {
@@ -13,7 +13,7 @@
             display: none;
         }
         .search-wrapper {
-            z-index: 2;
+            z-index: 100;
             position: relative;
             display: flex;
             align-items: center;

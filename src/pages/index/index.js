@@ -43,6 +43,8 @@ function showAllSearchResultsHandler() {
     const q = searchInp.value.trim();
     closeForm();
 
+    categories.querySelector('.active').classList.remove('active');
+
     if(q) {
         fetch(`https://dummyjson.com/recipes/search?q=${q}`)
             .then(res => res.json())
@@ -63,14 +65,14 @@ function onRecipeClickHandler(e) {
     if(target.classList.contains('save-btn')) {
         e.preventDefault();
 
-        const recIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];
+        let recIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];
 
         if(target.classList.contains('saved')) {
             target.classList.remove('saved');
 
             const id = target.closest('.recipe-card').id;
             const idx = recIds.indexOf(id);
-            recIds = recIds.splice(idx, 1);
+            recIds.splice(idx, 1);
         } else {
             target.classList.add('saved');
     
@@ -103,8 +105,13 @@ function searchKeyUpHandler() {
     }
 }
 function onCategoriesListClickHandler(e) {
+    recipesContainer.innerHTML = '';
+    document.getElementById('loader').style.display = 'flex';
+
     if(e.target.classList.contains('category')) {
-        categories.querySelector('.active').classList.remove('active');
+        const activeCateg = categoriesList.querySelector('.active');
+        if(activeCateg) activeCateg.classList.remove('active');
+        
         e.target.classList.add('active');
 
         const type = e.target.dataset.categoryId;
@@ -122,6 +129,7 @@ function onCategoriesListClickHandler(e) {
                 });
 
                 renderRecipes(recipes);
+                document.getElementById('loader').style.display = 'none';
             })
             .catch(error => console.error(error));
     }
@@ -131,6 +139,7 @@ function onCategoriesListClickHandler(e) {
 // ------- other functions -------
 
 function init() {
+    document.getElementById('loader').style.display = 'flex';
     fetch('https://dummyjson.com/recipes?limit=0')
     .then(res => res.json())
     .then(data => {
@@ -148,6 +157,7 @@ function init() {
         let categories = new Set(arr.flat());
 
         renderCategoriesList(categories);
+        document.getElementById('loader').style.display = 'none';
     })
     .catch(error => console.error(error));
 }
