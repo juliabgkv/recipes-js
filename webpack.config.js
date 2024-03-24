@@ -16,7 +16,6 @@ module.exports = {
         port: 8081
     },
     entry: {
-        common: './src/common.js', 
         home: './src/pages/index/index.js',
         recipe: './src/pages/recipe/recipe.js',
         saved: './src/pages/saved/saved.js'
@@ -30,17 +29,17 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './src/pages/index/index.html',
-            chunks: ['common', 'home']
+            chunks: ['home']
         }),
         new HtmlWebpackPlugin({
             filename: 'recipe.html',
             template: './src/pages/recipe/recipe.html',
-            chunks: ['common', 'recipe']
+            chunks: ['recipe']
         }),
         new HtmlWebpackPlugin({
             filename: 'saved.html',
             template: './src/pages/saved/saved.html',
-            chunks: ['common', 'saved']
+            chunks: ['saved']
         }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css'
