@@ -1,7 +1,7 @@
-@import './styles/variables';
-@import './styles/mixins';
-@import './styles/typography';
-@import './libs/normalize';
+@import './variables';
+@import './mixins';
+@import './typography';
+@import '../libs/normalize';
 
 html, body, * { 
     margin: 0;
