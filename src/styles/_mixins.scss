@@ -1,18 +1,25 @@
 @import './variables';
 
-@mixin flexible() {
+@mixin flexible($direction: row, $justify: flex-start, $alignment: stretch, $wrapping: nowrap) {
     display: flex;
+    @if $direction != row { flex-direction: $direction; }
+    @if $justify != flex-start { justify-content: $justify; }
+    @if $alignment != stretch { align-items: $alignment; }
+    @if $wrapping != nowrap { flex-wrap: $wrapping; }
 }
-@mixin icon-btn($url) {
-    width: $icon-btn-size;
-    height: $icon-btn-size;
+@mixin icon($url, $btnW: $btn-size, $btnH: $btn-size, $bgrdW: $btn-size, $bgrdH: $btn-size) {
+    width: $btnW;
+    height: $btnH;
     background-image: url($url);
-    background-size: $icon-btn-size $icon-btn-size;
+    background-size: $bgrdW $bgrdH;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: .6;
     cursor: pointer;
-    transition: opacity .15s ease-in-out;
+    transition: .15s ease-in-out;
+}
+@mixin icon-btn($url) {
+    @include icon($url);
+    opacity: .6;
 
     &:hover {
         opacity: 1;
@@ -21,4 +28,19 @@
 @mixin reset-btn() {
     border: none;
     background-color: transparent;
+}
+@mixin position-n-animdelay($top, $left, $delay) {
+    top: $top;
+    left: $left;
+    animation-delay: $delay;
+}
+@mixin primary-btn() {
+    cursor: pointer;
+    border-radius: $border-radius;
+    padding: 10px 20px;
+    
+    &:hover {
+        background-color: $accent-color;
+        color: $light-color;
+    }
 }

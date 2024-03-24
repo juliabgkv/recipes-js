@@ -10,9 +10,7 @@ html, body, * {
 }
 
 .topbar {
-    @include flexible();
-    justify-content: space-between;
-    align-items: center;
+    @include flexible($justify: space-between, $alignment: center);
     padding: .8rem 1.5rem;
     border-bottom: $border;
     background-color: $light-color;

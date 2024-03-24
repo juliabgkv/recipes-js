@@ -19,49 +19,31 @@
             animation: lds-grid 1.2s linear infinite;
     
             &:nth-child(1) {
-                top: 8px;
-                left: 8px;
-                animation-delay: 0s;
+                @include position-n-animdelay(8px, 8px, 0s);
             }
             &:nth-child(2) {
-                top: 8px;
-                left: 32px;
-                animation-delay: -0.4s;
+                @include position-n-animdelay(8px, 32px, -0.4s);
             }
             &:nth-child(3) {
-                top: 8px;
-                left: 56px;
-                animation-delay: -0.8s;
+                @include position-n-animdelay(8px, 56px, -0.8s);
             }
             &:nth-child(4) {
-                top: 32px;
-                left: 8px;
-                animation-delay: -0.4s;
+                @include position-n-animdelay(32px, 8px, -0.4s);
             }
             &:nth-child(5) {
-                top: 32px;
-                left: 32px;
-                animation-delay: -0.8s;
+                @include position-n-animdelay(32px, 32px, -0.8s);
             }
             &:nth-child(6) {
-                top: 32px;
-                left: 56px;
-                animation-delay: -1.2s;
+                @include position-n-animdelay(32px, 56px, -1.2s);
             }
             &:nth-child(7) {
-                top: 56px;
-                left: 8px;
-                animation-delay: -0.8s;
+                @include position-n-animdelay(56px, 8px, -0.8s);
             }
             &:nth-child(8) {
-                top: 56px;
-                left: 32px;
-                animation-delay: -1.2s;
+                @include position-n-animdelay(56px, 32px, -1.2s);
             }
             &:nth-child(9) {
-                top: 56px;
-                left: 56px;
-                animation-delay: -1.6s;
+                @include position-n-animdelay(56px, 56px, -1.6s);
             }
         }
     }
