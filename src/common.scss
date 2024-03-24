@@ -23,11 +23,12 @@ html, body, * {
         padding-left: 30px;
     }
     .logo {
-        font-family: $logo-font;
-        color: $dark-color;
-        font-size: 4rem;
         text-decoration: none;
         margin: 5px 0 0 20px;
         display: block;
+
+        img {
+            height: 60px;
+        }
     }
 }
