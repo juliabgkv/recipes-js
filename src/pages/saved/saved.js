@@ -1,5 +1,6 @@
 import './saved.html';
 import './saved.scss';
+import { getRecipes } from '../../scripts/api';
 
 const recipesContainer = document.getElementById('recipesContainer');
 
@@ -10,36 +11,23 @@ init();
 
 function init() {
     document.getElementById('loader').style.display = 'flex';
-    fetch('https://dummyjson.com/recipes?limit=0')
-    .then(res => res.json())
-    .then(data => {
-        fixDishOrigin(data.recipes);
 
-        // get recipes list
-        const recipes = data.recipes.map(({ id, name, image, rating, reviewCount }) => { 
-            return { id, name, image, rating, reviewCount };
+    getRecipes('', { limit: 0 })
+        .then(recipesData => {
+            // get recipes list
+            const recipes = recipesData.map(({ id, name, image, rating, reviewCount }) => { 
+                return { id, name, image, rating, reviewCount };
+            });
+    
+            let savedIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];
+            const savedRecipes = savedIds.map(id => {
+                return recipes.find(r => r.id == id);
+            });
+    
+            renderRecipes(savedRecipes);
+            
+            document.getElementById('loader').style.display = 'none';
         });
-
-        let savedIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];
-        const savedRecipes = savedIds.map(id => {
-            return recipes.find(r => r.id == id);
-        });
-
-        renderRecipes(savedRecipes);
-        
-        document.getElementById('loader').style.display = 'none';
-    })
-    .catch(error => console.error(error));
-}
-function fixDishOrigin(recipes) {
-    recipes.map(r => {
-        if(r.name.includes('Borscht')) {
-            r.name = 'Ukrainian Borscht';
-            r.cuisine = 'Ukrainian';
-            let idx = r.tags.indexOf('Russian');
-            r.tags[idx] = 'Ukrainian';
-        }
-    });
 }
 function renderRecipes(recipes) {
     const savedIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];

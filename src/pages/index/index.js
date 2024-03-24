@@ -1,5 +1,6 @@
 import './index.html';
 import './index.scss';
+import { getRecipes } from '../../scripts/api';
 
 const searchForm = document.getElementById('searchForm');
 const searchInp = document.getElementById('searchInp');
@@ -43,20 +44,18 @@ function showAllSearchResultsHandler() {
     const q = searchInp.value.trim();
     closeForm();
 
-    categories.querySelector('.active').classList.remove('active');
+    if(categories.querySelector('.active'))
+        categories.querySelector('.active').classList.remove('active'); // fix that
 
     if(q) {
-        fetch(`https://dummyjson.com/recipes/search?q=${q}`)
-            .then(res => res.json())
-            .then(data => {
-                fixDishOrigin(data.recipes);
-                const recipes = data.recipes.map(({ id, name, image, rating, reviewCount, mealType }) => { 
+        getRecipes('/search', { q: q })
+            .then(recipesData => {
+                const recipes = recipesData.map(({ id, name, image, rating, reviewCount, mealType }) => { 
                     return { id, name, image, rating, reviewCount, mealType };
                 });
 
                 renderRecipes(recipes);
-            })
-            .catch(error => console.error(error));
+            });
     }
 }
 function onRecipeClickHandler(e) {
@@ -90,25 +89,22 @@ function searchKeyUpHandler() {
     noResMessage.classList.remove('active');
 
     if(q) {
-        fetch(`https://dummyjson.com/recipes/search?q=${q}`)
-            .then(res => res.json())
-            .then(data => {
-                fixDishOrigin(data.recipes);
-                const recipes = data.recipes.map(({ id, name, image }) => { 
+        getRecipes('/search', { q: q })
+            .then(recipesData => {
+                const recipes = recipesData.map(({ id, name, image }) => { 
                     return { id, name, image };
                 });
 
                 if(recipes.length > 0) showPreviewSearchResults(recipes);
                 else noResMessage.classList.add('active');
-            })
-            .catch(error => console.error(error));
+            });
     }
 }
 function onCategoriesListClickHandler(e) {
-    recipesContainer.innerHTML = '';
-    document.getElementById('loader').style.display = 'flex';
-
     if(e.target.classList.contains('category')) {
+        recipesContainer.innerHTML = '';
+        document.getElementById('loader').style.display = 'flex';
+
         const activeCateg = categoriesList.querySelector('.active');
         if(activeCateg) activeCateg.classList.remove('active');
         
@@ -116,22 +112,26 @@ function onCategoriesListClickHandler(e) {
 
         const type = e.target.dataset.categoryId;
 
-        let url = (type == 'all') 
-            ? 'https://dummyjson.com/recipes?limit=0' 
-            : `https://dummyjson.com/recipes/meal-type/${type}`;
+        let path;
+        let params;
 
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                fixDishOrigin(data.recipes);
-                const recipes = data.recipes.map(({ id, name, image, rating, reviewCount, mealType }) => { 
+        if(type == 'all') {
+            path = '';
+            params = { limit: 0 };
+        } else {
+            path = `/meal-type/${type}`;
+            params = null;
+        }
+
+        getRecipes(path, params)
+            .then(recipesData => {
+                const recipes = recipesData.map(({ id, name, image, rating, reviewCount, mealType }) => { 
                     return { id, name, image, rating, reviewCount, mealType };
                 });
 
                 renderRecipes(recipes);
                 document.getElementById('loader').style.display = 'none';
-            })
-            .catch(error => console.error(error));
+            });
     }
 }
 
@@ -140,26 +140,23 @@ function onCategoriesListClickHandler(e) {
 
 function init() {
     document.getElementById('loader').style.display = 'flex';
-    fetch('https://dummyjson.com/recipes?limit=0')
-    .then(res => res.json())
-    .then(data => {
-        fixDishOrigin(data.recipes);
 
-        // get recipes list
-        const recipes = data.recipes.map(({ id, name, image, rating, reviewCount }) => { 
-            return { id, name, image, rating, reviewCount };
+    getRecipes('', { limit: 0 })
+        .then(recipesData => {
+            // get recipes list
+            const recipes = recipesData.map(({ id, name, image, rating, reviewCount }) => { 
+                return { id, name, image, rating, reviewCount };
+            });
+
+            renderRecipes(recipes);
+
+            // get all meal categories
+            const arr = recipesData.map(r => r.mealType);
+            let categories = new Set(arr.flat());
+
+            renderCategoriesList(categories);
+            document.getElementById('loader').style.display = 'none';
         });
-
-        renderRecipes(recipes);
-
-        // get all meal categories
-        const arr = data.recipes.map(r => r.mealType);
-        let categories = new Set(arr.flat());
-
-        renderCategoriesList(categories);
-        document.getElementById('loader').style.display = 'none';
-    })
-    .catch(error => console.error(error));
 }
 function showPreviewSearchResults(recipes) {
     resCount = recipes.length;
@@ -208,17 +205,6 @@ function renderRecipes(recipes) {
             clone.querySelector('.save-btn').classList.add('saved');
 
         recipesContainer.appendChild(clone);
-    });
-}
-// fix horrible, unacceptable API mistake - Borzch is Ukrainian meal
-function fixDishOrigin(recipes) {
-    recipes.map(r => {
-        if(r.name.includes('Borscht')) {
-            r.name = 'Ukrainian Borscht';
-            r.cuisine = 'Ukrainian';
-            let idx = r.tags.indexOf('Russian');
-            r.tags[idx] = 'Ukrainian';
-        }
     });
 }
 function renderCategoriesList(categories) {
