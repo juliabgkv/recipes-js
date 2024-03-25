@@ -1,6 +1,10 @@
 import './index.html';
 import './index.scss';
+
 import { getRecipes } from '../../scripts/api';
+import { categoryItemTemplate, searchResTemplate } from '../../scripts/templates';
+import { htmlToElement, extractRecipeCardData, createRecipeCardElement } from '../../scripts/utils';
+import { addID, deleteID, getSavedIDs } from '../../scripts/storage';
 
 const searchForm = document.getElementById('searchForm');
 const searchInp = document.getElementById('searchInp');
@@ -9,7 +13,11 @@ const searchResult = document.getElementById('searchResult');
 const noResMessage = document.getElementById('noResMessage');
 const categoriesList = document.getElementById('categories');
 const recipesContainer = document.getElementById('recipesContainer');
-const searchResTemplate = document.getElementById('searchResTemplate');
+const loader = document.getElementById('loader');
+const CLASSES_SELECTORS = {
+    SAVE_BTN: 'save-btn',
+    SAVED: 'saved'
+};
 let resCount = 0;
 
 init();
@@ -44,42 +52,29 @@ function showAllSearchResultsHandler() {
     const q = searchInp.value.trim();
     closeForm();
 
-    if(categories.querySelector('.active'))
-        categories.querySelector('.active').classList.remove('active'); // fix that
+    const activeItem = categories.querySelector('.active');
+    if(activeItem) activeItem.classList.remove('active');
 
     if(q) {
         getRecipes('/search', { q: q })
             .then(recipesData => {
-                const recipes = recipesData.map(({ id, name, image, rating, reviewCount, mealType }) => { 
-                    return { id, name, image, rating, reviewCount, mealType };
-                });
-
-                renderRecipes(recipes);
+                renderRecipes(recipesData);
             });
     }
 }
 function onRecipeClickHandler(e) {
     const target = e.target;
 
-    if(target.classList.contains('save-btn')) {
+    if(target.classList.contains(CLASSES_SELECTORS.SAVE_BTN)) {
         e.preventDefault();
 
-        let recIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];
-
-        if(target.classList.contains('saved')) {
-            target.classList.remove('saved');
-
-            const id = target.closest('.recipe-card').id;
-            const idx = recIds.indexOf(id);
-            recIds.splice(idx, 1);
+        if(target.classList.contains(CLASSES_SELECTORS.SAVED)) {
+            target.classList.remove(CLASSES_SELECTORS.SAVED);
+            deleteID(target.closest('.recipe-card').id);
         } else {
-            target.classList.add('saved');
-    
-            const newId = e.target.closest('.recipe-card').id;
-            recIds.push(newId);
+            target.classList.add(CLASSES_SELECTORS.SAVED);
+            addID(target.closest('.recipe-card').id);
         }
-
-        localStorage.setItem('saved-recipes-id', JSON.stringify(recIds));
     }
 }
 function searchKeyUpHandler() {
@@ -103,7 +98,7 @@ function searchKeyUpHandler() {
 function onCategoriesListClickHandler(e) {
     if(e.target.classList.contains('category')) {
         recipesContainer.innerHTML = '';
-        document.getElementById('loader').style.display = 'flex';
+        loader.style.display = 'flex';
 
         const activeCateg = categoriesList.querySelector('.active');
         if(activeCateg) activeCateg.classList.remove('active');
@@ -111,9 +106,7 @@ function onCategoriesListClickHandler(e) {
         e.target.classList.add('active');
 
         const type = e.target.dataset.categoryId;
-
-        let path;
-        let params;
+        let path, params;
 
         if(type == 'all') {
             path = '';
@@ -125,12 +118,9 @@ function onCategoriesListClickHandler(e) {
 
         getRecipes(path, params)
             .then(recipesData => {
-                const recipes = recipesData.map(({ id, name, image, rating, reviewCount, mealType }) => { 
-                    return { id, name, image, rating, reviewCount, mealType };
-                });
+                renderRecipes(recipesData);
 
-                renderRecipes(recipes);
-                document.getElementById('loader').style.display = 'none';
+                loader.style.display = 'none';
             });
     }
 }
@@ -139,23 +129,16 @@ function onCategoriesListClickHandler(e) {
 // ------- other functions -------
 
 function init() {
-    document.getElementById('loader').style.display = 'flex';
+    loader.style.display = 'flex';
 
     getRecipes('', { limit: 0 })
         .then(recipesData => {
-            // get recipes list
-            const recipes = recipesData.map(({ id, name, image, rating, reviewCount }) => { 
-                return { id, name, image, rating, reviewCount };
-            });
-
-            renderRecipes(recipes);
-
-            // get all meal categories
-            const arr = recipesData.map(r => r.mealType);
-            let categories = new Set(arr.flat());
-
+            const categories = extractCategories(recipesData);
             renderCategoriesList(categories);
-            document.getElementById('loader').style.display = 'none';
+
+            renderRecipes(recipesData);
+
+            loader.style.display = 'none';
         });
 }
 function showPreviewSearchResults(recipes) {
@@ -171,52 +154,40 @@ function showPreviewSearchResults(recipes) {
     }
 }
 function renderSearchResPreviewItem(recipe) {
-    const clone = searchResTemplate.content.cloneNode(true);
-    const imgEl = clone.querySelector('.result-item-img');
+    const html = searchResTemplate.replace('{{id}}', recipe.id)
+                                    .replace('{{img}}', recipe.image)
+                                    .replace('{{imgAlt}}', recipe.name)
+                                    .replace('{{name}}', recipe.name);
 
-    imgEl.setAttribute('src', recipe.image);
-    imgEl.setAttribute('alt', recipe.name);
-    clone.querySelector('.result-item').setAttribute('href', `./recipe.html?recipe-id=${recipe.id}`);
-    clone.querySelector('.result-item-name').innerText = recipe.name;
-
-    searchResult.appendChild(clone);
+    const element = htmlToElement(html);
+    searchResult.appendChild(element);
 }
-function renderRecipes(recipes) {
+function renderRecipes(recipesData) {
     recipesContainer.innerHTML = '';
 
-    const savedIds = JSON.parse(localStorage.getItem('saved-recipes-id')) || [];
+    const recipes = extractRecipeCardData(recipesData);
 
     recipes.map(r => {
-        const recipeCardTemplate = document.getElementById('recipeCardTemplate');
-        const clone = recipeCardTemplate.content.cloneNode(true);
-        const card = clone.querySelector('.recipe-card');
-        const photo = clone.querySelector('.card-photo');
+        const element = createRecipeCardElement(r);
 
-        card.setAttribute('id', r.id);
-        card.setAttribute('href', `./recipe.html?recipe-id=${r.id}`);
-        photo.setAttribute('src', r.image);
-        photo.setAttribute('alt', r.name);
-        clone.querySelector('.card-description-name').innerText = r.name;
-        clone.querySelector('.rating').innerText = r.rating;
-        clone.querySelector('.star-inner').style.width = `${(r.rating / 5) * 100}%`;
-        clone.querySelector('.review-count').innerText = `(${r.reviewCount})`;
+        if(getSavedIDs().some(id => id == r.id))
+            element.querySelector('.' + CLASSES_SELECTORS.SAVE_BTN).classList.add(CLASSES_SELECTORS.SAVED);
 
-        if(savedIds.some(id => id == r.id))
-            clone.querySelector('.save-btn').classList.add('saved');
-
-        recipesContainer.appendChild(clone);
+        recipesContainer.appendChild(element);
     });
 }
 function renderCategoriesList(categories) {
     for(let c of categories) {
-        const liEl = document.createElement('li');
+        const html = categoryItemTemplate.replace('{{id}}', c)
+                                            .replace('{{category}}', c);
 
-        liEl.innerText = c;
-        liEl.classList.add('category');
-        liEl.dataset.categoryId = c;
-
-        categoriesList.appendChild(liEl);
+        const element = htmlToElement(html);
+        categoriesList.appendChild(element);
     }
+}
+function extractCategories(data) {
+    const arr = data.map(r => r.mealType);
+    return new Set(arr.flat());
 }
 function delay(fn, ms) {
     let timer = 0;
