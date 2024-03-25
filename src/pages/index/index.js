@@ -190,6 +190,8 @@ function renderRecipes(recipesData) {
     });
 }
 function renderCategoriesList(categories) {
+    categoriesList.appendChild(htmlToElement(`<li data-category-id="all" class="category active">All</li>`));
+    
     for(let c of categories) {
         const html = categoryItemTemplate.replace('{{id}}', c)
                                             .replace('{{category}}', c);
