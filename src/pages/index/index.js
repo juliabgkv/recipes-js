@@ -10,9 +10,10 @@ const searchForm = document.getElementById('searchForm');
 const searchInp = document.getElementById('searchInp');
 const backdrop = document.getElementById('backdrop');
 const searchResult = document.getElementById('searchResult');
-const noResMessage = document.getElementById('noResMessage');
+const resMessage = document.getElementById('resMessage');
 const categoriesList = document.getElementById('categories');
 const recipesContainer = document.getElementById('recipesContainer');
+const searchResMessage = document.getElementById('searchResMessage');
 const loader = document.getElementById('loader');
 const CLASSES_SELECTORS = {
     SAVE_BTN: 'save-btn',
@@ -56,9 +57,13 @@ function showAllSearchResultsHandler() {
     if(activeItem) activeItem.classList.remove('active');
 
     if(q) {
+        loader.style.display = 'flex';
+
         getRecipes('/search', { q: q })
             .then(recipesData => {
+                showSearchResultMessage(recipesData.length, q);
                 renderRecipes(recipesData);
+                loader.style.display = 'none';
             });
     }
 }
@@ -81,7 +86,7 @@ function searchKeyUpHandler() {
     const q = this.value.trim();
 
     searchResult.innerHTML = '';
-    noResMessage.classList.remove('active');
+    resMessage.classList.remove('active');
 
     if(q) {
         getRecipes('/search', { q: q })
@@ -91,13 +96,14 @@ function searchKeyUpHandler() {
                 });
 
                 if(recipes.length > 0) showPreviewSearchResults(recipes);
-                else noResMessage.classList.add('active');
+                else resMessage.classList.add('active');
             });
     }
 }
 function onCategoriesListClickHandler(e) {
     if(e.target.classList.contains('category')) {
         recipesContainer.innerHTML = '';
+        searchResMessage.classList.remove('active');
         loader.style.display = 'flex';
 
         const activeCateg = categoriesList.querySelector('.active');
@@ -150,8 +156,15 @@ function showPreviewSearchResults(recipes) {
         document.getElementById('resultsCount').innerText = resCount;
         recipes.map(renderSearchResPreviewItem);
     } else {
-        noResMessage.classList.add('active');
+        resMessage.classList.add('active');
     }
+}
+function showSearchResultMessage(count, query) {
+    searchResMessage.classList.add('active');
+
+    searchResMessage.innerText = (count == 0) 
+    ? `Nothing found on your query "${query}"...` 
+    : `Found ${count} recipe(s) on your query "${query}": `;
 }
 function renderSearchResPreviewItem(recipe) {
     const html = searchResTemplate.replace('{{id}}', recipe.id)

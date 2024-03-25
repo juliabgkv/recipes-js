@@ -102,7 +102,7 @@
                 &:has(.result-item) .show-all-btn {
                     display: block;
                 }
-                .no-result-message {
+                .result-message {
                     height: 0;
                     visibility: hidden;
                     font-family: $primary-font;
@@ -174,5 +174,18 @@
                 border-color: $accent-color;
             }
         }
+    }
+}
+
+.recipes .search-result-message {
+    display: none;
+
+    &.active {
+        padding-bottom: 20px;
+        font-family: $secondary-font;
+        font-weight: 700;
+        color: #919191;
+        display: flex;
+        justify-content: center;
     }
 }
