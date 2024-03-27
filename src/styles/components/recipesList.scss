@@ -1,3 +1,5 @@
+@import './rating';
+
 .recipes {
     margin: 20px;
 
@@ -75,35 +77,6 @@
                 .card-description-rating {
                     font-family: $secondary-font;
                     @include flexible($alignment: center);
-
-                    .star-outer {
-                        position: relative;
-                        font-size: 1.2rem;
-                        display: inline-block;
-
-                        &::before {
-                            content: "\2605 \2605 \2605 \2605 \2605";
-                            color: #cdcdcd;
-                        }
-                        .star-inner {
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            overflow: hidden;
-
-                            &::before {
-                                content: "\2605 \2605 \2605 \2605 \2605";
-                                color: gold;
-                            }
-                        }
-                    }
-                    .rating {
-                        margin-left: 10px;
-                    }
-                    .review-count {
-                        margin-left: 3px;
-                        color: #919191;
-                    }
                 }
             }
         }
