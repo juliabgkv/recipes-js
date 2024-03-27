@@ -1,2 +1,127 @@
-@import '../../common.scss';
+@import '../../styles/common';
+@import '../../styles/components/loader';
+@import '../../styles/components/rating';
 
+.topbar {
+    border-bottom: none;
+
+    .back-btn {
+        @include reset-btn();
+        @include icon-btn("../../assets/icons8-back-50_black.png");
+        margin-right: 20px;
+    }
+}
+.background {
+    z-index: -1;
+    @include fixedPositioning();
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &::after {
+        content: "";
+        @include fixedPositioning();
+        backdrop-filter: blur(6px);
+    }
+}
+.recipe-wrapper {
+    max-width: 1000px;
+    min-height: 100vh;
+    padding: 30px 20px 20px;
+    margin: 20px auto;
+    position: relative;
+    background-color: $light-color;
+
+    .recipe {
+        .header {
+            @include flexible($direction: column, $alignment: center);
+
+            .recipe-name {
+                font-family: $primary-font;
+                font-weight: 600;
+                font-size: 3rem;
+                color: $dark-color;
+            }
+            .categories {
+                margin-top: 10px;
+                font-family: $secondary-font;
+                color: #787878
+            }
+            .rating-block {
+                @include flexible();
+                font-family: $secondary-font;
+                margin: 10px 0 20px;
+            }
+        }
+        .recipe-details {
+            @include flexible($justify: center, $alignment: center);
+    
+            .left-side,
+            .right-side {
+                margin-bottom: 30px;
+                text-align: center;
+                @include flexible($direction: column, $alignment: center);
+                
+                .icon {
+                    margin-bottom: 10px
+                }
+                .group {
+                    margin-bottom: 15px;
+
+                    &-title {
+                        font-family: $secondary-font;
+                        font-size: 1.1rem;
+                        letter-spacing: 1px;
+                        font-weight: 600;
+                        color: $dark-color;
+                        margin-bottom: 5px;
+                    }
+                    &-data {
+                        font-family: $secondary-font;
+                        color: #313131;
+                    }
+                }
+            }
+            .left-side {
+                margin-right: 40px;
+
+                .icon {
+                    @include icon('../../assets/cooking-time.png', 70px, 70px, 78px, 80px);
+                }
+            }
+            .recipe-photo {
+                width: 400px;
+                margin: 0 20px;
+            }
+            .right-side {
+                margin-left: 40px;
+
+                .icon {
+                    @include icon('../../assets/dish.png', 70px, 70px, 70px, 70px);
+                }
+            }
+        }
+        .recipe-body {
+            @include flexible($direction: column, $alignment: center);
+            margin-top: 40px;
+    
+            .recipe-body-title {
+                text-align: center;
+                font-family: $primary-font;
+                font-size: 1.8rem;
+                @include centerLine();
+            }
+            .ingredients ul,
+            .instructions ol {
+                font-family: $secondary-font;
+                font-weight: 500;
+                margin: 20px 10px 20px 70px;
+            }
+            .ingredients li {
+                margin: 5px 0;
+            }
+            .instructions li {
+                margin: 10px 0;
+            }
+        }
+    }
+}

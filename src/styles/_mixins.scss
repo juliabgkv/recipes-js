@@ -14,12 +14,12 @@
     background-size: $bgrdW $bgrdH;
     background-position: center;
     background-repeat: no-repeat;
-    cursor: pointer;
-    transition: .15s ease-in-out;
 }
 @mixin icon-btn($url) {
     @include icon($url);
     opacity: .6;
+    cursor: pointer;
+    transition: .15s ease-in-out;
 
     &:hover {
         opacity: 1;
@@ -42,5 +42,30 @@
     &:hover {
         background-color: $accent-color;
         color: $light-color;
+    }
+}
+@mixin fixedPositioning() {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+@mixin centerLine() {
+    text-align: center;
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+
+    &::before,
+    &::after {
+        content: "\a0";
+        display: inline-block;
+        width: 370px;
+        height: 1px;
+        background-color: $accent-color;
+        line-height: 0;
+        margin: 0 10px;
     }
 }
