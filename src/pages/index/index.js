@@ -58,11 +58,12 @@ function showAllSearchResultsHandler() {
 
     if(q) {
         loader.style.display = 'flex';
+        recipesContainer.innerHTML = '';
 
         getRecipes('/search', { q: q })
             .then(recipesData => {
-                showSearchResultMessage(recipesData.length, q);
                 renderRecipes(recipesData);
+                showSearchResultMessage(recipesData.length, q);
                 loader.style.display = 'none';
             });
     }
@@ -176,8 +177,6 @@ function renderSearchResPreviewItem(recipe) {
     searchResult.appendChild(element);
 }
 function renderRecipes(recipesData) {
-    recipesContainer.innerHTML = '';
-
     const recipes = extractRecipeCardData(recipesData);
 
     recipes.map(r => {
