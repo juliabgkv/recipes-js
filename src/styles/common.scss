@@ -15,6 +15,9 @@ html, body, * {
     border-bottom: $border;
     background-color: $light-color;
 
+    .left-side {
+        @include flexible($alignment: center);
+    }
     .saved-link {
         display: block;
         @include icon-btn("../../assets/icons8-favorites-64.png");
