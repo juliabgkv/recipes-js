@@ -11,7 +11,7 @@
     }
     .search-wrapper {
         @include flexible($alignment: center);
-        z-index: 100;
+        z-index: 200;
         position: relative;
         width: 400px;
         height: 50px;
@@ -133,7 +133,7 @@
         display: none;
 
         &.active {
-            z-index: 1;
+            z-index: 100;
             display: block;
             position: fixed;
             top: 0;
