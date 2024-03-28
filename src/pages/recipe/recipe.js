@@ -3,15 +3,19 @@ import './recipe.scss';
 
 import { getRecipe } from '../../scripts/api';
 import { htmlToElement} from '../../scripts/utils';
+import { addID, deleteID, getSavedIDs } from '../../scripts/storage';
 
+const SELECTOR_SAVED_CLASS = 'saved';
 const loader = document.getElementById('loader');
+const backBtn = document.getElementById('backBtn');
+let id;
 
-document.getElementById('backBtn').addEventListener('click', () => history.back());
+backBtn.addEventListener('click', () => history.back());
 
 if(window.location.search) {
     loader.style.display = 'flex';
     const params = new URLSearchParams(location.search);
-    const id = parseInt(params.get('recipe-id'));
+    id = params.get('recipe-id');
 
     getRecipe(id)
         .then(data => {
@@ -57,6 +61,12 @@ if(window.location.search) {
                 document.getElementById('recipeWrapper').appendChild(element);
                 document.getElementById('background').style.backgroundImage = `url(${data.image})`;
 
+                // render save recipe btn
+                const isSaved = getSavedIDs().some(recipeID => recipeID == id);
+                const saveBtn = document.getElementById('saveBtn');
+                if(isSaved) saveBtn.classList.add(SELECTOR_SAVED_CLASS);
+                saveBtn.addEventListener('click', saveBtnClickHandler);
+
                 loader.style.display = 'none';
             }
         });
@@ -64,6 +74,12 @@ if(window.location.search) {
     showNotFound();
 }
 
+function saveBtnClickHandler() {
+    if(this.classList.contains(SELECTOR_SAVED_CLASS)) deleteID(id);
+    else addID(id);
+    
+    this.classList.toggle(SELECTOR_SAVED_CLASS);
+}
 function showNotFound() {
     document.getElementById('recipeWrapper').innerText = 'Recipe Not Found';
 }

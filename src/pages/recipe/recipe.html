@@ -24,7 +24,7 @@
 
     
     <template id="recipeTemplate">
-        <div data-recipe-id="{{id}}" id="recipe" class="recipe">
+        <div id="recipe" class="recipe">
             <div class="header">
                 <div class="recipe-name">{{name}}</div>
                 <div class="categories"></div>
@@ -78,6 +78,9 @@
                     <h3 class="recipe-body-title">Instructions</h3>
                     <ol class="instructions-list"></ol>
                 </div>
+            </div>
+            <div class="btns-group">
+                <button id="saveBtn" class="save-button">Favourite</button>
             </div>
         </div>
     </template>

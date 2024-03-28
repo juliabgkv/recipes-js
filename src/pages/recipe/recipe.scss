@@ -123,5 +123,26 @@
                 margin: 10px 0;
             }
         }
+        .btns-group {
+            margin: 10px 0;
+            text-align: center;
+
+            .save-button {
+                @include reset-btn();
+                font-family: $primary-font;
+                border: 2px solid $accent-color;
+                border-radius: $border-radius;
+                padding: 10px 10px 10px 30px;
+                background-image: url(../../assets/icons8-favorite-50.png);
+                background-repeat: no-repeat;
+                background-position: left;
+                background-size: 25px 25px;
+                cursor: pointer;
+                
+                &.saved {
+                    background-image: url(../../assets/saved.png);
+                }
+            }
+        }
     }
 }
