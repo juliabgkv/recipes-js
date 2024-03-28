@@ -101,20 +101,25 @@
             }
         }
         .recipe-body {
-            @include flexible($direction: column, $alignment: center);
+            @include flexible($direction: column);
             margin-top: 40px;
     
             .recipe-body-title {
+                @include centerLine();
                 text-align: center;
                 font-family: $primary-font;
                 font-size: 1.8rem;
-                @include centerLine();
+            }
+            .ingredients,
+            .instructions {
+                width: 100%;
             }
             .ingredients ul,
             .instructions ol {
                 font-family: $secondary-font;
                 font-weight: 500;
-                margin: 20px 10px 20px 70px;
+                padding: 10px 50px;
+                margin: 20px;
             }
             .ingredients li {
                 margin: 5px 0;
