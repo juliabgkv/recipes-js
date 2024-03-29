@@ -39,11 +39,13 @@ searchForm.addEventListener('submit', e => {
 // ------- event handlers -------
 
 function openFormBtnClickHandler() {
+    document.body.style.overflow = 'hidden';
     backdrop.classList.add('active');
     searchForm.classList.add('active');
     setTimeout(() => searchInp.focus(), 100);
 }
 function closeForm() {
+    document.body.style.overflow = 'visible';
     searchForm.reset();
     searchResult.innerHTML = '';
     searchForm.classList.remove('active');

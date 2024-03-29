@@ -63,3 +63,9 @@
         padding: 0 10px; 
     }
 }
+@mixin searchTopPosition($top) {
+    top: $top;
+    left: 10px;
+    right: 10px;
+    width: 95%;
+}

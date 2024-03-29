@@ -8,6 +8,9 @@ html, body, * {
     padding: 0;
     box-sizing: border-box;
 }
+body {
+    min-width: 300px;
+}
 
 .topbar {
     @include flexible($justify: space-between, $alignment: center);
@@ -31,5 +34,21 @@ html, body, * {
         img {
             height: 60px;
         }
+    }
+}
+
+@media (max-width: 768px) {
+    .topbar .logo img {
+        height: 50px;
+    }
+}
+@media (max-width: 410px) {
+    .topbar {
+        padding: .3rem .5rem;
+    }
+}
+@media (max-width: 480px) {
+    .topbar .logo img {
+        height: 40px;
     }
 }

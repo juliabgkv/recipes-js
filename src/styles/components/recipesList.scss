@@ -92,5 +92,14 @@
 @media (max-width: 768px) {
     .recipes-container {
         grid-template-columns: 1fr 1fr;
+        
+        .recipe-card .save-btn {
+            transform: translateY(0);
+        }
+    }
+}
+@media (max-width: 480px) {
+    .recipes-container {
+        grid-template-columns: 1fr;
     }
 }

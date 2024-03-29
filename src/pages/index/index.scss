@@ -185,3 +185,28 @@
         justify-content: center;
     }
 }
+
+@media (max-width: 768px) {
+    .categories-list li {
+        padding: 5px 10px;
+        margin-bottom: 5px;
+    }
+}
+@media (max-width: 680px) {
+    .topbar {
+        position: relative;
+
+        .search-wrapper {
+            position: static;
+            width: auto;
+
+            .search-form {
+                @include searchTopPosition(20px);
+                height: 50px;
+            }
+            .search-result {
+                @include searchTopPosition(70px);
+            }
+        }
+    }
+}
