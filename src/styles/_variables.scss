@@ -5,7 +5,11 @@ $secondary-font: "Comfortaa", sans-serif;
 $dark-color: #131313;
 $light-color: #fff;
 $accent-color: #ff9b41;
+$transparentBlack: rgba(0, 0, 0, .3);
+$dark-grey: #313131;
+$middle-grey: #787878;
+$light-grey: #919191;
 
 $btn-size: 30px;
 $border-radius: 10px;
-$border: 1px solid #919191;
+$border: 1px solid $light-grey;

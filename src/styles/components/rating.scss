@@ -7,6 +7,7 @@
         content: "\2605 \2605 \2605 \2605 \2605";
         color: #cdcdcd;
     }
+
     .star-inner {
         position: absolute;
         top: 0;
@@ -19,9 +20,11 @@
         }
     }
 }
+
 .rating {
     margin-left: 10px;
 }
+
 .review-count {
     margin-left: 3px;
     color: #919191;

@@ -1,4 +1,4 @@
-import { recipeCardTemplate } from "./templates";
+import { recipeCardTemplate } from './templates';
 
 export function htmlToElement(htmlString) {
     const div = document.createElement('div');
@@ -6,11 +6,13 @@ export function htmlToElement(htmlString) {
 
     return div.firstChild;
 }
+
 export function extractRecipeCardData(data) {
     return data.map(({ id, name, image, rating, reviewCount }) => { 
         return { id, name, image, rating, reviewCount };
     });
 }
+
 export function createRecipeCardElement(r) {
     const html = recipeCardTemplate.replace('{{id}}', r.id)
                                         .replace('{{cardId}}', r.id)

@@ -1,15 +1,15 @@
 @import './variables';
 @import './mixins';
 @import './typography';
-@import '../libs/normalize';
 
-html, body, * { 
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 body {
     min-width: 300px;
+
+    &, html, * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 }
 
 .topbar {
@@ -18,14 +18,20 @@ body {
     border-bottom: $border;
     background-color: $light-color;
 
+    @media (max-width: 410px) {
+        padding: .3rem .5rem;
+    }
+
     .left-side {
         @include flexible($alignment: center);
     }
+
     .saved-link {
         display: block;
         @include icon-btn("../../assets/icons8-favorites-64.png");
         padding-left: 30px;
     }
+
     .logo {
         text-decoration: none;
         margin: 5px 0 0 20px;
@@ -33,22 +39,14 @@ body {
 
         img {
             height: 60px;
-        }
-    }
-}
 
-@media (max-width: 768px) {
-    .topbar .logo img {
-        height: 50px;
-    }
-}
-@media (max-width: 410px) {
-    .topbar {
-        padding: .3rem .5rem;
-    }
-}
-@media (max-width: 480px) {
-    .topbar .logo img {
-        height: 40px;
+            @media (max-width: 768px) {
+                height: 50px;
+            }
+            
+            @media (max-width: 480px) {
+                height: 40px;
+            }
+        }
     }
 }

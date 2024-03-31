@@ -27,6 +27,7 @@ function init() {
             loader.style.display = 'none';
         });
 }
+
 function onRecipeClickHandler(e) {
     const target = e.target;
 
@@ -40,6 +41,7 @@ function onRecipeClickHandler(e) {
         if(!getSavedIDs().length) emptyMssg.style.display = 'flex';
     }
 }
+
 function renderRecipes(recipes) {
     const savedIds = getSavedIDs();
 

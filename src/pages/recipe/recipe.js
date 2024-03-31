@@ -4,6 +4,7 @@ import './recipe.scss';
 import { getRecipe } from '../../scripts/api';
 import { htmlToElement} from '../../scripts/utils';
 import { addID, deleteID, getSavedIDs } from '../../scripts/storage';
+import { recipePageTemplate } from '../../scripts/templates';
 
 const SELECTOR_SAVED_CLASS = 'saved';
 const loader = document.getElementById('loader');
@@ -24,7 +25,7 @@ if(window.location.search) {
             } else {
                 document.title = data.name;
 
-                const template = document.getElementById('recipeTemplate').innerHTML;
+                const template = recipePageTemplate;
                 const html = template.replace('{{id}}', data.id)
                                         .replace('{{name}}', data.name)
                                         .replace('{{rating}}', data.rating)
@@ -80,9 +81,11 @@ function saveBtnClickHandler() {
     
     this.classList.toggle(SELECTOR_SAVED_CLASS);
 }
+
 function showNotFound() {
     document.getElementById('recipeWrapper').innerText = 'Recipe Not Found';
 }
+
 function createLiElement(text) {
     const li = document.createElement('li');
     li.innerText = text;

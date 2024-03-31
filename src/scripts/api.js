@@ -12,6 +12,7 @@ export function getRecipes(path, params) {
             })
             .catch(error => console.error(error));
 }
+
 export function getRecipe(id) {
     return fetch(`${API_BASE_URL}/${id}`)
         .then(res => res.json())
@@ -24,14 +25,16 @@ export function getRecipe(id) {
         .catch(error => console.error(error));
 }
 
-// fix horrible, unacceptable API mistake - Borscht is Ukrainian meal
+// fixed horrible, unacceptable API mistake - Borscht is Ukrainian meal
 function checkFixDishes(recipes) {
     recipes.find(recipe => { if(isrus(recipe)) fix(recipe) });
     return recipes;
 }
+
 function isrus(recipe){
     return recipe.name.includes('Russian Borscht');
 }
+
 function fix(recipe) {
     recipe.name = 'Ukrainian Borscht';
     recipe.cuisine = 'Ukrainian';

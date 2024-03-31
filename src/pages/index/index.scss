@@ -3,12 +3,18 @@
 @import '../../styles/components/recipesList';
 
 .topbar {
+    @media (max-width: 680px) {
+        position: relative;
+    }
+
     .saved-link {
         margin-right: 15px;
     }
+
     .menu-toggler {
         display: none;
     }
+
     .search-wrapper {
         @include flexible($alignment: center);
         z-index: 200;
@@ -16,10 +22,16 @@
         width: 400px;
         height: 50px;
 
+        @media (max-width: 680px) {
+            position: static;
+            width: auto;
+        }
+
         .search-btn {
             @include icon-btn("../../assets/icons8-search-50.png");
             @include reset-btn();
         }
+
         .search-form {
             @include flexible($justify: space-between, $alignment: center);
             width: 100%;
@@ -33,6 +45,12 @@
             background-color: $light-color;
             border-bottom: $border;
             transition: 100ms ease-in-out;
+
+            
+            @media (max-width: 680px) {
+                @include searchTopPosition(20px);
+                height: 50px;
+            }
     
             &.active {
                 visibility: visible;
@@ -42,14 +60,17 @@
                     display: block
                 }
             }
+            
             .submit-btn,
             .close-btn {
                 @include reset-btn();
             }
+
             .submit-btn {
                 margin-right: 10px;
                 @include icon-btn("../../assets/icons8-search-50.png");
             }
+
             input {
                 font-family: $secondary-font;
                 width: 90%;
@@ -59,10 +80,12 @@
                     outline: none;
                 }
             }
+
             .close-btn {
                 @include icon-btn("../../assets/icons8-multiply-50.png");
             }
         }
+        
         .search-result {
             display: none;
             width: 100%;
@@ -70,6 +93,10 @@
             position: absolute;
             top: 50px;
             background-color: $light-color;
+
+            @media (max-width: 680px) {
+                @include searchTopPosition(70px);
+            }
 
             .search-result-container {
                 border-bottom: $border;
@@ -88,6 +115,7 @@
                         color: $light-color;
                         font-weight: 600;
                     }
+
                     img {
                         width: 30px;
                         height: 30px;
@@ -96,9 +124,11 @@
                     }
                 }
             }
+
             &:has(.result-item) .show-all-btn {
                 display: block;
             }
+
             .result-message {
                 height: 0;
                 visibility: hidden;
@@ -110,11 +140,13 @@
                     height: auto
                 }
             }
+
             .show-all-btn {
                 @include reset-btn();
                 display: none;
                 position: relative;
                 font-family: $primary-font;
+                font-size: 1rem;
                 font-weight: 500;
                 padding: 10px 20px;
                 margin: 10px auto 15px;
@@ -140,7 +172,7 @@
             bottom: 0;
             right: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, .3);
+            background-color: $transparentBlack;
         }
     }
 }
@@ -161,11 +193,17 @@
             cursor: pointer;
             transition: .15s ease-in;
 
+            @media (max-width: 768px) {
+                padding: 5px 10px;
+                margin-bottom: 5px;
+            }
+
             &.active {
                 border-radius: $border-radius;
                 background-color:  $accent-color;
                 color: $light-color;
             }
+
             &:hover {
                 border-color: $accent-color;
             }
@@ -180,33 +218,8 @@
         padding-bottom: 20px;
         font-family: $secondary-font;
         font-weight: 700;
-        color: #919191;
+        color: $light-grey;
         display: flex;
         justify-content: center;
-    }
-}
-
-@media (max-width: 768px) {
-    .categories-list li {
-        padding: 5px 10px;
-        margin-bottom: 5px;
-    }
-}
-@media (max-width: 680px) {
-    .topbar {
-        position: relative;
-
-        .search-wrapper {
-            position: static;
-            width: auto;
-
-            .search-form {
-                @include searchTopPosition(20px);
-                height: 50px;
-            }
-            .search-result {
-                @include searchTopPosition(70px);
-            }
-        }
     }
 }

@@ -2,7 +2,7 @@ import './index.html';
 import './index.scss';
 
 import { getRecipes } from '../../scripts/api';
-import { categoryItemTemplate, searchResTemplate } from '../../scripts/templates';
+import { allCategoryTemplate, categoryItemTemplate, searchResTemplate } from '../../scripts/templates';
 import { htmlToElement, extractRecipeCardData, createRecipeCardElement } from '../../scripts/utils';
 import { addID, deleteID, getSavedIDs } from '../../scripts/storage';
 
@@ -44,6 +44,7 @@ function openFormBtnClickHandler() {
     searchForm.classList.add('active');
     setTimeout(() => searchInp.focus(), 100);
 }
+
 function closeForm() {
     document.body.style.overflow = 'visible';
     searchForm.reset();
@@ -51,6 +52,7 @@ function closeForm() {
     searchForm.classList.remove('active');
     backdrop.classList.remove('active');
 }
+
 function showAllSearchResultsHandler() {
     const q = searchInp.value.trim();
     closeForm();
@@ -70,6 +72,7 @@ function showAllSearchResultsHandler() {
             });
     }
 }
+
 function onRecipeClickHandler(e) {
     const target = e.target;
 
@@ -85,6 +88,7 @@ function onRecipeClickHandler(e) {
         }
     }
 }
+
 function searchKeyUpHandler() {
     const q = this.value.trim();
 
@@ -103,6 +107,7 @@ function searchKeyUpHandler() {
             });
     }
 }
+
 function onCategoriesListClickHandler(e) {
     if(e.target.classList.contains('category')) {
         recipesContainer.innerHTML = '';
@@ -150,6 +155,7 @@ function init() {
             loader.style.display = 'none';
         });
 }
+
 function showPreviewSearchResults(recipes) {
     resCount = recipes.length;
     
@@ -162,13 +168,15 @@ function showPreviewSearchResults(recipes) {
         resMessage.classList.add('active');
     }
 }
+
 function showSearchResultMessage(count, query) {
     searchResMessage.classList.add('active');
 
     searchResMessage.innerText = (count == 0) 
-    ? `Nothing found on your query "${query}"...` 
-    : `Found ${count} recipe(s) on your query "${query}": `;
+        ? `Nothing found on your query "${query}"...` 
+        : `Found ${count} recipe(s) on your query "${query}": `;
 }
+
 function renderSearchResPreviewItem(recipe) {
     const html = searchResTemplate.replace('{{id}}', recipe.id)
                                     .replace('{{img}}', recipe.image)
@@ -178,6 +186,7 @@ function renderSearchResPreviewItem(recipe) {
     const element = htmlToElement(html);
     searchResult.appendChild(element);
 }
+
 function renderRecipes(recipesData) {
     const recipes = extractRecipeCardData(recipesData);
 
@@ -190,8 +199,9 @@ function renderRecipes(recipesData) {
         recipesContainer.appendChild(element);
     });
 }
+
 function renderCategoriesList(categories) {
-    categoriesList.appendChild(htmlToElement(`<li data-category-id="all" class="category active">All</li>`));
+    categoriesList.appendChild(htmlToElement(allCategoryTemplate));
     
     for(let c of categories) {
         const html = categoryItemTemplate.replace('{{id}}', c)
@@ -201,10 +211,12 @@ function renderCategoriesList(categories) {
         categoriesList.appendChild(element);
     }
 }
+
 function extractCategories(data) {
     const arr = data.map(r => r.mealType);
     return new Set(arr.flat());
 }
+
 function delay(fn, ms) {
     let timer = 0;
     return function(...args) {

@@ -7,6 +7,7 @@
     @if $alignment != stretch { align-items: $alignment; }
     @if $wrapping != nowrap { flex-wrap: $wrapping; }
 }
+
 @mixin icon($url, $btnW: $btn-size, $btnH: $btn-size, $bgrdW: $btn-size, $bgrdH: $btn-size) {
     width: $btnW;
     height: $btnH;
@@ -15,6 +16,7 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
 @mixin icon-btn($url) {
     @include icon($url);
     opacity: .6;
@@ -25,15 +27,18 @@
         opacity: 1;
     }
 }
+
 @mixin reset-btn() {
     border: none;
     background-color: transparent;
 }
+
 @mixin position-n-animdelay($top, $left, $delay) {
     top: $top;
     left: $left;
     animation-delay: $delay;
 }
+
 @mixin primary-btn() {
     cursor: pointer;
     border-radius: $border-radius;
@@ -44,6 +49,7 @@
         color: $light-color;
     }
 }
+
 @mixin fixedPositioning() {
     position: fixed;
     top: 0;
@@ -51,6 +57,7 @@
     right: 0;
     bottom: 0;
 }
+
 @mixin centerLine() {
     width: 100%; 
     text-align: center; 
@@ -59,10 +66,11 @@
     margin: 10px 0 20px; 
 
     span { 
-        background: #fff; 
+        background: $light-color; 
         padding: 0 10px; 
     }
 }
+
 @mixin searchTopPosition($top) {
     top: $top;
     left: 10px;

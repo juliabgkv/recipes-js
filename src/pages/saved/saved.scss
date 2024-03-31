@@ -8,14 +8,16 @@
         @include icon-btn("../../assets/icons8-back-50_black.png");
     }
 }
+
 .recipes {
     .empty-mssg  {
         display: none;
         font-family: $secondary-font;
-        color: #919191;
+        color: $middle-grey;
         justify-content: center;
         padding: 40px 20px;
     }
+    
     .save-btn {
         transform: translateY(0);
     }
