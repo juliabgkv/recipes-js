@@ -18,8 +18,8 @@ function init() {
     loader.style.display = 'flex';
 
     getRecipes('', { limit: 0 })
-        .then(recipesData => {
-            const recipes = extractRecipeCardData(recipesData);
+        .then(data => {
+            const recipes = extractRecipeCardData(data.recipes);
             const savedRecipes = getSavedIDs().map(id => recipes.find(r => r.id == id));
     
             renderRecipes(savedRecipes);

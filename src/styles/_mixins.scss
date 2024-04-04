@@ -28,9 +28,9 @@
     }
 }
 
-@mixin reset-btn() {
+@mixin reset-btn($bgr-color: transparent) {
     border: none;
-    background-color: transparent;
+    background-color: $bgr-color;
 }
 
 @mixin position-n-animdelay($top, $left, $delay) {
@@ -50,7 +50,7 @@
     }
 }
 
-@mixin fixedPositioning() {
+@mixin fixed-positioning() {
     position: fixed;
     top: 0;
     left: 0;
@@ -58,7 +58,7 @@
     bottom: 0;
 }
 
-@mixin centerLine() {
+@mixin center-line() {
     width: 100%; 
     text-align: center; 
     border-bottom: 2px solid $accent-color; 
@@ -71,9 +71,41 @@
     }
 }
 
-@mixin searchTopPosition($top) {
+@mixin search-top-position($top) {
     top: $top;
     left: 10px;
     right: 10px;
     width: 95%;
+}
+
+@mixin set-main-loader-childs-settings() {
+    $min: 8px;
+    $middle: 32px;
+    $max: 56px;
+
+    $settings: (
+        1 $min $min 0s,
+        2 $min $middle -0.4s,
+        3 $min $max -0.8s,
+        4 $middle $min -0.4s,
+        5 $middle $middle -0.8s,
+        6 $middle $max -1.2s,
+        7 $max $min -0.8s,
+        8 $max $middle -1.2s,
+        9 $max $max -1.6s
+    );
+    
+    @each $index, $top, $right, $delay in $settings {
+        &:nth-child(#{$index}) {
+            @include position-n-animdelay($top, $right, $delay);
+        }
+    }
+}
+
+@mixin set-childs-animation-delays($indexes) {
+    @each $index, $delay in $indexes {
+        &:nth-child(#{$index}) {
+            animation-delay: $delay;
+        }
+    }
 }

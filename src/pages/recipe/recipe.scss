@@ -1,5 +1,5 @@
 @import '../../styles/common';
-@import '../../styles/components/loader';
+@import '../../styles/components/main-loader';
 @import '../../styles/components/rating';
 
 .topbar {
@@ -18,13 +18,13 @@
 
 .background {
     z-index: -1;
-    @include fixedPositioning();
+    @include fixed-positioning();
     background-repeat: no-repeat;
     background-size: cover;
 
     &::after {
         content: "";
-        @include fixedPositioning();
+        @include fixed-positioning();
         backdrop-filter: blur(6px);
     }
 }
@@ -164,7 +164,7 @@
             margin-top: 40px;
     
             .recipe-body-title {
-                @include centerLine();
+                @include center-line();
                 text-align: center;
                 font-family: $primary-font;
                 font-size: 1.8rem;
@@ -205,6 +205,7 @@
             .save-button {
                 @include reset-btn();
                 font-family: $primary-font;
+                font-size: 1rem;
                 border: 2px solid $accent-color;
                 border-radius: $border-radius;
                 padding: 10px 10px 10px 30px;

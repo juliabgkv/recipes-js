@@ -1,0 +1,32 @@
+.loader {
+    display: none;
+    height: calc(100vh - 200px);
+    justify-content: center;
+    align-items: center;
+
+    &.active {
+        display: flex;
+    }
+
+    .lds-grid {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+    
+        div {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: $accent-color;
+            animation: lds-grid 1.2s linear infinite;
+            @include set-main-loader-childs-settings;
+        }
+    }
+}
+
+@keyframes lds-grid {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

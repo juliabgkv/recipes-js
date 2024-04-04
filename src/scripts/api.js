@@ -1,14 +1,18 @@
 const API_BASE_URL = 'https://dummyjson.com/recipes';
+export const URL_PATHS = {
+    search: '/search',
+    mealType: '/meal-type',
+    empty: ''
+};
 
 export function getRecipes(path, params) {
-    let url = `${API_BASE_URL}${path}`;
-    if(params)
-        url = `${url}?${new URLSearchParams(params)}`;
+    let url = buildURL(path, params);
 
     return fetch(url)
             .then(res => res.json())
             .then(data => {
-                return checkFixDishes(data.recipes);
+                data.recipes = checkFixDishes(data.recipes);
+                return data;
             })
             .catch(error => console.error(error));
 }
@@ -23,6 +27,26 @@ export function getRecipe(id) {
                 return recipe;
         })
         .catch(error => console.error(error));
+}
+
+function buildURL(path, params) {
+    let url = `${API_BASE_URL}${path}`;
+    params = cleanEmptyProps(params);
+
+    if(params)
+        url = `${url}?${new URLSearchParams(params)}`;
+
+    return url;
+}
+
+function cleanEmptyProps(obj) {
+    for(let propName in obj) {
+        if(obj[propName] === '') {
+            delete obj[propName];
+        }
+    }
+
+    return obj;
 }
 
 // fixed horrible, unacceptable API mistake - Borscht is Ukrainian meal

@@ -1,11 +1,9 @@
 @import './rating';
+@import './main-loader';
+@import './show-more-loader';
 
 .recipes {
     margin: 20px;
-
-    &:has(.recipe-card) .loader  {
-        display: none;
-    }
 
     &-container {
         max-width: 1200px;
@@ -35,7 +33,7 @@
             text-decoration: none;
             color: $dark-color;
             border-radius: 5px;
-            box-shadow: 0px 0px 5px 0px rgb(209, 209, 209);
+            box-shadow: $box-shadow;
             transition: .1s cubic-bezier(0.165, 0.84, 0.44, 1);
     
             .save-btn {

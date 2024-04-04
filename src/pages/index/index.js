@@ -1,7 +1,7 @@
 import './index.html';
 import './index.scss';
 
-import { getRecipes } from '../../scripts/api';
+import { URL_PATHS, getRecipes } from '../../scripts/api';
 import { allCategoryTemplate, categoryItemTemplate, searchResTemplate } from '../../scripts/templates';
 import { htmlToElement, extractRecipeCardData, createRecipeCardElement } from '../../scripts/utils';
 import { addID, deleteID, getSavedIDs } from '../../scripts/storage';
@@ -15,11 +15,20 @@ const categoriesList = document.getElementById('categories');
 const recipesContainer = document.getElementById('recipesContainer');
 const searchResMessage = document.getElementById('searchResMessage');
 const loader = document.getElementById('loader');
+const moreLoader = document.getElementById('moreLoader');
+const showMoreBtn = document.getElementById('showMoreBtn');
 const CLASSES_SELECTORS = {
     SAVE_BTN: 'save-btn',
     SAVED: 'saved'
 };
-let resCount = 0;
+
+let total = 0; // total count of recipes list
+let path = URL_PATHS.empty;
+const params = {
+    limit: 12, // 12 items of recipes list loads per one request
+    skip: 0, // variable to indicate how recipes need to skip (not load in curr request)
+    q: ''
+};
 
 init();
 
@@ -29,6 +38,7 @@ document.getElementById('showAllBtn').addEventListener('click', showAllSearchRes
 recipesContainer.addEventListener('click', onRecipeClickHandler);
 backdrop.addEventListener('click', closeForm);
 categoriesList.addEventListener('click', onCategoriesListClickHandler);
+showMoreBtn.addEventListener('click', showMoreBtnClickHandler);
 searchInp.addEventListener('keyup', delay(searchKeyUpHandler, 500)); // delay for executing function after the user has stoppes typing
 searchForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -47,28 +57,37 @@ function openFormBtnClickHandler() {
 
 function closeForm() {
     document.body.style.overflow = 'visible';
-    searchForm.reset();
     searchResult.innerHTML = '';
+    searchForm.reset();
     searchForm.classList.remove('active');
     backdrop.classList.remove('active');
 }
 
 function showAllSearchResultsHandler() {
-    const q = searchInp.value.trim();
+    const searchStr = searchInp.value.trim();
     closeForm();
 
-    const activeItem = categories.querySelector('.active');
-    if(activeItem) activeItem.classList.remove('active');
+    if(searchStr) {
+        const activeItem = categories.querySelector('.active');
+        if(activeItem) activeItem.classList.remove('active');
 
-    if(q) {
-        loader.style.display = 'flex';
+        showLoader(true);
+        showMoreBtnDisplaying(true);
         recipesContainer.innerHTML = '';
 
-        getRecipes('/search', { q: q })
-            .then(recipesData => {
-                renderRecipes(recipesData);
-                showSearchResultMessage(recipesData.length, q);
-                loader.style.display = 'none';
+        path = URL_PATHS.search;
+        params.skip = 0;
+        params.q = searchStr;
+
+        getRecipes(path, params)
+            .then(data => {
+                renderRecipes(data.recipes);
+                showSearchResultMessage(data.total, searchStr);
+
+                total = data.total;
+
+                showLoader(false);
+                showMoreBtnDisplaying();
             });
     }
 }
@@ -90,19 +109,25 @@ function onRecipeClickHandler(e) {
 }
 
 function searchKeyUpHandler() {
-    const q = this.value.trim();
+    const searchStr = this.value.trim();
 
     searchResult.innerHTML = '';
     resMessage.classList.remove('active');
 
-    if(q) {
-        getRecipes('/search', { q: q })
-            .then(recipesData => {
-                const recipes = recipesData.map(({ id, name, image }) => { 
+    if(searchStr) {
+        path = URL_PATHS.search;
+        let searchParams = {
+            q: searchStr,
+            limit: 5
+        };
+
+        getRecipes(path, searchParams)
+            .then(data => {
+                const recipes = data.recipes.map(({ id, name, image }) => { 
                     return { id, name, image };
                 });
 
-                if(recipes.length > 0) showPreviewSearchResults(recipes);
+                if(recipes.length > 0) showPreviewSearchResults(recipes, data.total);
                 else resMessage.classList.add('active');
             });
     }
@@ -112,7 +137,8 @@ function onCategoriesListClickHandler(e) {
     if(e.target.classList.contains('category')) {
         recipesContainer.innerHTML = '';
         searchResMessage.classList.remove('active');
-        loader.style.display = 'flex';
+        showLoader(true);
+        showMoreBtnDisplaying(true);
 
         const activeCateg = categoriesList.querySelector('.active');
         if(activeCateg) activeCateg.classList.remove('active');
@@ -120,49 +146,67 @@ function onCategoriesListClickHandler(e) {
         e.target.classList.add('active');
 
         const type = e.target.dataset.categoryId;
-        let path, params;
 
-        if(type == 'all') {
-            path = '';
-            params = { limit: 0 };
-        } else {
-            path = `/meal-type/${type}`;
-            params = null;
-        }
+        path = (type == 'all') ? URL_PATHS.empty : `${URL_PATHS.mealType}/${type}`;
+        params.skip = 0;
+        params.q = '';
 
         getRecipes(path, params)
-            .then(recipesData => {
-                renderRecipes(recipesData);
+            .then(data => {
+                total = data.total;
 
-                loader.style.display = 'none';
+                renderRecipes(data.recipes);
+
+                showLoader(false);
+                showMoreBtnDisplaying();
             });
     }
+}
+
+function showMoreBtnClickHandler() {
+    showMoreLoader(true);
+    showMoreBtnDisplaying(true);
+
+    params.skip += params.limit;
+
+    getRecipes(path, params)
+        .then(data => {
+            renderRecipes(data.recipes);
+
+            showMoreLoader(false);
+            showMoreBtnDisplaying();
+        });
 }
 
 
 // ------- other functions -------
 
 function init() {
-    loader.style.display = 'flex';
+    showLoader(true);
 
-    getRecipes('', { limit: 0 })
-        .then(recipesData => {
-            const categories = extractCategories(recipesData);
+    getRecipes(path, params)
+        .then(data => {
+            total = data.total;
+
+            const categories = extractCategories(data.recipes);
             renderCategoriesList(categories);
 
-            renderRecipes(recipesData);
+            renderRecipes(data.recipes);
 
-            loader.style.display = 'none';
+            showLoader(false);
+            showMoreBtnDisplaying();
         });
 }
 
-function showPreviewSearchResults(recipes) {
-    resCount = recipes.length;
-    
-    if(resCount > 0) {
-        if(resCount > 5)  recipes = recipes.slice(0, 5);
+function showMoreBtnDisplaying(isHidden) {
+    showMoreBtn.style.display = isHidden || ((total - params.skip) < params.limit)
+        ? 'none'
+        : 'block';
+}
 
-        document.getElementById('resultsCount').innerText = resCount;
+function showPreviewSearchResults(recipes, total) {
+    if(total > 0) {
+        document.getElementById('resultsCount').innerText = total;
         recipes.map(renderSearchResPreviewItem);
     } else {
         resMessage.classList.add('active');
@@ -223,4 +267,14 @@ function delay(fn, ms) {
         clearTimeout(timer);
         timer = setTimeout(fn.bind(this, ...args), ms || 0);
     }
+}
+
+function showLoader(isActive) {
+    if(isActive) loader.classList.add('active');
+    else loader.classList.remove('active');
+}
+
+function showMoreLoader(isActive) {
+    if(isActive) moreLoader.classList.add('active');
+    else moreLoader.classList.remove('active');
 }

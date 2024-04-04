@@ -1,5 +1,4 @@
 @import '../../styles/common';
-@import '../../styles/components/loader';
 @import '../../styles/components/recipesList';
 
 .topbar {
@@ -48,7 +47,7 @@
 
             
             @media (max-width: 680px) {
-                @include searchTopPosition(20px);
+                @include search-top-position(20px);
                 height: 50px;
             }
     
@@ -95,7 +94,7 @@
             background-color: $light-color;
 
             @media (max-width: 680px) {
-                @include searchTopPosition(70px);
+                @include search-top-position(70px);
             }
 
             .search-result-container {
@@ -211,15 +210,40 @@
     }
 }
 
-.recipes .search-result-message {
-    display: none;
+.recipes {
+    @include flexible($direction: column, $alignment: center);
 
-    &.active {
-        padding-bottom: 20px;
-        font-family: $secondary-font;
-        font-weight: 700;
-        color: $light-grey;
-        display: flex;
-        justify-content: center;
+    .search-result-message {
+        display: none;
+    
+        &.active {
+            padding-bottom: 20px;
+            font-family: $secondary-font;
+            font-weight: 700;
+            color: $light-grey;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &:has(.loader.active) .show-more-btn {
+        display: none;
+    }
+
+    .show-more-btn {
+        @include reset-btn($accent-color);
+        font-family: $primary-font;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $light-color;
+        padding: 10px 30px;
+        height: 42px;
+        border-radius: $border-radius;
+        cursor: pointer;
+        transition: all .1s ease-in-out;
+
+        &:hover {
+            box-shadow: $box-shadow;
+        }
     }
 }
