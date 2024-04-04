@@ -1,4 +1,3 @@
-import './recipe.html';
 import './recipe.scss';
 
 import { getRecipe } from '../../scripts/api';

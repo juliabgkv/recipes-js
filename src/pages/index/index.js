@@ -1,4 +1,3 @@
-import './index.html';
 import './index.scss';
 
 import { URL_PATHS, getRecipes } from '../../scripts/api';

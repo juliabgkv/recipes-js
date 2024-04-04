@@ -23,7 +23,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         clean: true,
-        filename: '[name].[contenthash].js'
+        filename: '[name].[contenthash].js',
+        assetModuleFilename: 'assets/[name][ext]'
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -81,6 +82,10 @@ module.exports = {
                     ]
                   }
                 }
+            },
+            {
+                test: /\.(jpe?g|png|webp|gif|svg)$/i,
+                type: 'asset/resource'
             }
         ]
     }
