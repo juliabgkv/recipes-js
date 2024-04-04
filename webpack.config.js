@@ -28,19 +28,19 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            favicon: './src/assets/cook-book.png',
+            favicon: './src/assets/chef.png',
             filename: 'index.html',
             template: './src/pages/index/index.html',
             chunks: ['home']
         }),
         new HtmlWebpackPlugin({
-            favicon: './src/assets/cook-book.png',
+            favicon: './src/assets/chef.png',
             filename: 'recipe.html',
             template: './src/pages/recipe/recipe.html',
             chunks: ['recipe']
         }),
         new HtmlWebpackPlugin({
-            favicon: './src/assets/cook-book.png',
+            favicon: './src/assets/chef.png',
             filename: 'saved.html',
             template: './src/pages/saved/saved.html',
             chunks: ['saved']
