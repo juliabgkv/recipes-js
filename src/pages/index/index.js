@@ -1,8 +1,9 @@
+import './index.html';
 import './index.scss';
 
 import { URL_PATHS, getRecipes } from '../../scripts/api';
 import { allCategoryTemplate, categoryItemTemplate, searchResTemplate } from '../../scripts/templates';
-import { htmlToElement, extractRecipeCardData, createRecipeCardElement } from '../../scripts/utils';
+import { htmlToElement, extractRecipeCardData, createRecipeCardElement, showLoader } from '../../scripts/utils';
 import { addID, deleteID, getSavedIDs } from '../../scripts/storage';
 
 const searchForm = document.getElementById('searchForm');
@@ -70,7 +71,7 @@ function showAllSearchResultsHandler() {
         const activeItem = categories.querySelector('.active');
         if(activeItem) activeItem.classList.remove('active');
 
-        showLoader(true);
+        showLoader(true, loader);
         showMoreBtnDisplaying(true);
         recipesContainer.innerHTML = '';
 
@@ -85,7 +86,7 @@ function showAllSearchResultsHandler() {
 
                 total = data.total;
 
-                showLoader(false);
+                showLoader(false, loader);
                 showMoreBtnDisplaying();
             });
     }
@@ -136,7 +137,7 @@ function onCategoriesListClickHandler(e) {
     if(e.target.classList.contains('category')) {
         recipesContainer.innerHTML = '';
         searchResMessage.classList.remove('active');
-        showLoader(true);
+        showLoader(true, loader);
         showMoreBtnDisplaying(true);
 
         const activeCateg = categoriesList.querySelector('.active');
@@ -156,7 +157,7 @@ function onCategoriesListClickHandler(e) {
 
                 renderRecipes(data.recipes);
 
-                showLoader(false);
+                showLoader(false, loader);
                 showMoreBtnDisplaying();
             });
     }
@@ -181,7 +182,7 @@ function showMoreBtnClickHandler() {
 // ------- other functions -------
 
 function init() {
-    showLoader(true);
+    showLoader(true, loader);
 
     getRecipes(path, params)
         .then(data => {
@@ -192,7 +193,7 @@ function init() {
 
             renderRecipes(data.recipes);
 
-            showLoader(false);
+            showLoader(false, loader);
             showMoreBtnDisplaying();
         });
 }
@@ -266,11 +267,6 @@ function delay(fn, ms) {
         clearTimeout(timer);
         timer = setTimeout(fn.bind(this, ...args), ms || 0);
     }
-}
-
-function showLoader(isActive) {
-    if(isActive) loader.classList.add('active');
-    else loader.classList.remove('active');
 }
 
 function showMoreLoader(isActive) {

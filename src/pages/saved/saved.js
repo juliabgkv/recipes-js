@@ -1,8 +1,9 @@
+import './saved.html';
 import './saved.scss';
 
 import { getRecipes } from '../../scripts/api';
 import { deleteID, getSavedIDs } from '../../scripts/storage';
-import { extractRecipeCardData, createRecipeCardElement } from '../../scripts/utils';
+import { extractRecipeCardData, createRecipeCardElement, showLoader } from '../../scripts/utils';
 
 const recipesContainer = document.getElementById('recipesContainer');
 const loader = document.getElementById('loader');
@@ -14,7 +15,7 @@ document.getElementById('backBtn').addEventListener('click', () => history.back(
 init();
 
 function init() {
-    loader.style.display = 'flex';
+    showLoader(true, loader);
 
     getRecipes('', { limit: 0 })
         .then(data => {
@@ -23,7 +24,7 @@ function init() {
     
             renderRecipes(savedRecipes);
             
-            loader.style.display = 'none';
+            showLoader(false, loader);
         });
 }
 

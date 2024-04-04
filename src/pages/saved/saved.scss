@@ -1,14 +1,21 @@
-@import '../../styles/common.scss';
-@import '../../styles/components/recipesList.scss';
+@import '../../styles/common';
+@import '../../styles/components/recipesList';
 
 .topbar {
     .back-btn {
         @include reset-btn();
-        @include icon-btn("../../assets/icons8-back-50_black.png");
+        @include icon-btn('../../assets/icons8-back-50_black.png');
     }
 }
 
 .recipes {
+    .section-title {
+        font-family: $primary-font;
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+
     .empty-mssg  {
         display: none;
         font-family: $secondary-font;

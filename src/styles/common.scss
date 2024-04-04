@@ -28,7 +28,7 @@ body {
 
     .saved-link {
         display: block;
-        @include icon-btn("../../assets/icons8-favorites-64.png");
+        @include icon-btn('../../assets/icons8-favorites-64.png');
         padding-left: 30px;
     }
 

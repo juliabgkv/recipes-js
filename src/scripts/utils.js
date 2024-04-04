@@ -27,3 +27,8 @@ export function createRecipeCardElement(r) {
 
     return element;
 }
+
+export function showLoader(isActive, loaderEl) {
+    if(isActive) loaderEl.classList.add('active');
+    else loaderEl.classList.remove('active');
+}

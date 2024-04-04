@@ -27,7 +27,7 @@
         }
 
         .search-btn {
-            @include icon-btn("../../assets/icons8-search-50.png");
+            @include icon-btn('../../assets/icons8-search-50.png');
             @include reset-btn();
         }
 
@@ -67,7 +67,7 @@
 
             .submit-btn {
                 margin-right: 10px;
-                @include icon-btn("../../assets/icons8-search-50.png");
+                @include icon-btn('../../assets/icons8-search-50.png');
             }
 
             input {
@@ -81,7 +81,7 @@
             }
 
             .close-btn {
-                @include icon-btn("../../assets/icons8-multiply-50.png");
+                @include icon-btn('../../assets/icons8-multiply-50.png');
             }
         }
         

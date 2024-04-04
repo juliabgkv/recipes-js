@@ -1,7 +1,8 @@
+import './recipe.html';
 import './recipe.scss';
 
 import { getRecipe } from '../../scripts/api';
-import { htmlToElement} from '../../scripts/utils';
+import { htmlToElement, showLoader} from '../../scripts/utils';
 import { addID, deleteID, getSavedIDs } from '../../scripts/storage';
 import { recipePageTemplate } from '../../scripts/templates';
 
@@ -13,7 +14,7 @@ let id;
 backBtn.addEventListener('click', () => history.back());
 
 if(window.location.search) {
-    loader.style.display = 'flex';
+    showLoader(true, loader);
     const params = new URLSearchParams(location.search);
     id = params.get('recipe-id');
 
@@ -67,7 +68,7 @@ if(window.location.search) {
                 if(isSaved) saveBtn.classList.add(SELECTOR_SAVED_CLASS);
                 saveBtn.addEventListener('click', saveBtnClickHandler);
 
-                loader.style.display = 'none';
+                showLoader(false, loader);
             }
         });
 } else {

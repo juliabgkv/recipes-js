@@ -7,7 +7,7 @@
 
     .back-btn {
         @include reset-btn();
-        @include icon-btn("../../assets/icons8-back-50_black.png");
+        @include icon-btn('../../assets/icons8-back-50_black.png');
         margin-right: 20px;
 
         @media (max-width: 410px) {
@@ -23,7 +23,7 @@
     background-size: cover;
 
     &::after {
-        content: "";
+        content: '';
         @include fixed-positioning();
         backdrop-filter: blur(6px);
     }

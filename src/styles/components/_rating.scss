@@ -1,10 +1,11 @@
 .star-outer {
     position: relative;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+    line-height: 1.3rem;
     display: inline-block;
 
     &::before {
-        content: "\2605 \2605 \2605 \2605 \2605";
+        content: '\2605 \2605 \2605 \2605 \2605';
         color: #cdcdcd;
     }
 
@@ -15,10 +16,14 @@
         overflow: hidden;
 
         &::before {
-            content: "\2605 \2605 \2605 \2605 \2605";
+            content: '\2605 \2605 \2605 \2605 \2605';
             color: gold;
         }
     }
+}
+
+.rating, .review-count {
+    font-size: 1rem;
 }
 
 .rating {
