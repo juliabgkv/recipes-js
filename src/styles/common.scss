@@ -15,7 +15,7 @@ body {
 .topbar {
     @include flexible($justify: space-between, $alignment: center);
     padding: .8rem 1.5rem;
-    border-bottom: $border;
+    box-shadow: $box-shadow;
     background-color: $light-color;
 
     @media (max-width: 410px) {

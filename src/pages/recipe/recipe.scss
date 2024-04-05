@@ -4,7 +4,7 @@
 @import '../../styles/components/save-recipe-btn';
 
 .topbar {
-    border-bottom: none;
+    box-shadow: none;
 
     .back-btn {
         @include reset-btn();
