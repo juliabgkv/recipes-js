@@ -17,6 +17,8 @@ const searchResMessage = document.getElementById('searchResMessage');
 const loader = document.getElementById('loader');
 const moreLoader = document.getElementById('moreLoader');
 const showMoreBtn = document.getElementById('showMoreBtn');
+const burgerMenu = document.getElementById('burgerMenu');
+const categoriesSection = document.getElementById('categoriesSection');
 const CLASSES_SELECTORS = {
     SAVE_BTN: 'save-btn',
     SAVED: 'saved'
@@ -38,6 +40,7 @@ document.getElementById('showAllBtn').addEventListener('click', showAllSearchRes
 recipesContainer.addEventListener('click', onRecipeClickHandler);
 backdrop.addEventListener('click', closeForm);
 categoriesList.addEventListener('click', onCategoriesListClickHandler);
+burgerMenu.addEventListener('click', burgerMenuClickHandler);
 showMoreBtn.addEventListener('click', showMoreBtnClickHandler);
 searchInp.addEventListener('keyup', delay(searchKeyUpHandler, 500)); // delay for executing function after the user has stoppes typing
 searchForm.addEventListener('submit', e => {
@@ -56,11 +59,15 @@ function openFormBtnClickHandler() {
 }
 
 function closeForm() {
-    document.body.style.overflow = 'visible';
-    searchResult.innerHTML = '';
-    searchForm.reset();
-    searchForm.classList.remove('active');
-    backdrop.classList.remove('active');
+    if(burgerMenu.classList.contains('active')) {
+        burgerMenuClickHandler();
+    } else {
+        document.body.style.overflow = 'visible';
+        searchResult.innerHTML = '';
+        searchForm.reset();
+        searchForm.classList.remove('active');
+        backdrop.classList.remove('active');
+    }
 }
 
 function showAllSearchResultsHandler() {
@@ -135,6 +142,8 @@ function searchKeyUpHandler() {
 
 function onCategoriesListClickHandler(e) {
     if(e.target.classList.contains('category')) {
+        if(burgerMenu.classList.contains('active')) burgerMenuClickHandler();
+
         recipesContainer.innerHTML = '';
         searchResMessage.classList.remove('active');
         showLoader(true, loader);
@@ -161,6 +170,12 @@ function onCategoriesListClickHandler(e) {
                 showMoreBtnDisplaying();
             });
     }
+}
+
+function burgerMenuClickHandler() {
+    burgerMenu.classList.toggle('active');
+    categoriesSection.classList.toggle('active');
+    backdrop.classList.toggle('active');
 }
 
 function showMoreBtnClickHandler() {

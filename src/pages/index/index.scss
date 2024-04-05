@@ -1,17 +1,14 @@
 @import '../../styles/common';
 @import '../../styles/components/recipesList';
+@import '../../styles/components/burger-menu';
 
 .topbar {
     @media (max-width: 680px) {
         position: relative;
     }
 
-    .saved-link {
-        margin-right: 15px;
-    }
-
-    .menu-toggler {
-        display: none;
+    .left-side {
+        gap: 10px;
     }
 
     .search-wrapper {
@@ -178,6 +175,35 @@
 
 .categories {
     margin: 10px 30px;
+
+    @media (max-width: 675px) {
+        z-index: 500;
+        padding-top: $tablet-topbar-height;
+        position: absolute;
+        top: 0;
+        width: 50%;
+        margin: 0;
+        transform: translateX(-100%);
+
+        &-list {
+            @include flexible($direction: column, $alignment: center);
+            gap: 5px;
+            padding-bottom: 10px;
+
+            li.active {
+                padding: 5px 15px;
+            }
+        }
+
+        &.active {
+            transform: translateX(0);
+            background-color: $light-color;
+        }
+    }
+
+    @media (max-width: 570px) {
+        width: 100%;
+    }
     
     &-list {
         @include flexible($justify: center, $wrapping: wrap);
@@ -192,7 +218,7 @@
             cursor: pointer;
             transition: .15s ease-in;
 
-            @media (max-width: 768px) {
+            @media (max-width: 815px) {
                 padding: 5px 10px;
                 margin-bottom: 5px;
             }
