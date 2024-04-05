@@ -32,6 +32,7 @@ export const searchResTemplate = `
 
 export const recipePageTemplate = `
     <div id="recipe" class="recipe">
+        <div class="save-btn save-recipe-btn"></div>
         <div class="header">
             <div class="recipe-name">{{name}}</div>
             <div class="categories"></div>
@@ -87,7 +88,7 @@ export const recipePageTemplate = `
             </div>
         </div>
         <div class="btns-group">
-            <button id="saveBtn" class="save-button">Favourite</button>
+            <button id="saveBtn" class="save-bottom-button save-recipe-btn">Favourite</button>
         </div>
     </div>
 `;

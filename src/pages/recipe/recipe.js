@@ -9,6 +9,7 @@ import { recipePageTemplate } from '../../scripts/templates';
 const SELECTOR_SAVED_CLASS = 'saved';
 const loader = document.getElementById('loader');
 const backBtn = document.getElementById('backBtn');
+let saveBtns = null;
 let id;
 
 backBtn.addEventListener('click', () => history.back());
@@ -62,11 +63,13 @@ if(window.location.search) {
                 document.getElementById('recipeWrapper').appendChild(element);
                 document.getElementById('background').style.backgroundImage = `url(${data.image})`;
 
-                // render save recipe btn
+                // render save recipe btns
+                saveBtns = document.getElementsByClassName('save-recipe-btn');
                 const isSaved = getSavedIDs().some(recipeID => recipeID == id);
-                const saveBtn = document.getElementById('saveBtn');
-                if(isSaved) saveBtn.classList.add(SELECTOR_SAVED_CLASS);
-                saveBtn.addEventListener('click', saveBtnClickHandler);
+                for(let btn of saveBtns) {
+                    if(isSaved) btn.classList.add('saved');
+                    btn.addEventListener('click', saveBtnClickHandler);
+                }
 
                 showLoader(false, loader);
             }
@@ -76,10 +79,16 @@ if(window.location.search) {
 }
 
 function saveBtnClickHandler() {
-    if(this.classList.contains(SELECTOR_SAVED_CLASS)) deleteID(id);
-    else addID(id);
+    if(this.classList.contains(SELECTOR_SAVED_CLASS)) {
+        deleteID(id);
+    }
+    else {
+        addID(id);
+    }
     
-    this.classList.toggle(SELECTOR_SAVED_CLASS);
+    for(let btn of saveBtns) {
+        btn.classList.toggle(SELECTOR_SAVED_CLASS);
+    }
 }
 
 function showNotFound() {

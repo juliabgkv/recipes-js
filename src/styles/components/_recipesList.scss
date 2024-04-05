@@ -1,6 +1,7 @@
-@import './rating';
 @import './main-loader';
 @import './show-more-loader';
+@import './rating';
+@import './save-recipe-btn';
 
 .recipes {
     margin: 20px;
@@ -35,33 +36,6 @@
             border-radius: 5px;
             box-shadow: $box-shadow;
             transition: .1s cubic-bezier(0.165, 0.84, 0.44, 1);
-    
-            .save-btn {
-                z-index: 10;
-                @include icon('../../assets/icons8-favorite-50.png', 35px, 40px, 25px, 25px);
-                background-color: $light-color;
-                border-radius: 0 0 $border-radius $border-radius;
-                border: none;
-                padding: 10px;
-                cursor: pointer;
-                position: absolute;
-                right: 5px;
-                transform: translateY(-100%);
-                transition: .15s ease-in-out;
-
-                @media (max-width: 768px) {
-                    transform: translateY(0);
-                }
-
-                &:hover {
-                    background-color: rgba(#fff, .9);
-                }
-
-                &.saved {
-                    transform: translateY(0);
-                    background-image: url('../../assets/saved.png');
-                }
-            }
 
             .card-photo-wrap {
                 overflow: hidden;

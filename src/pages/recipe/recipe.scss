@@ -1,6 +1,7 @@
 @import '../../styles/common';
 @import '../../styles/components/main-loader';
 @import '../../styles/components/rating';
+@import '../../styles/components/save-recipe-btn';
 
 .topbar {
     border-bottom: none;
@@ -16,32 +17,31 @@
     }
 }
 
-.background {
-    z-index: -1;
-    @include fixed-positioning();
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    &::after {
-        content: '';
-        @include fixed-positioning();
-        backdrop-filter: blur(6px);
-    }
-}
-
 .recipe-wrapper {
     max-width: 1000px;
-    min-height: 100vh;
     padding: 30px 20px 20px;
     margin: 20px auto;
+    border-radius: $border-radius;
     position: relative;
     background-color: $light-color;
+
+    @media (max-width: 1005px) {
+        border-radius: 0;
+    }
+
+    .save-btn {
+        top: 5px;
+        right: 5px;
+        background-color: transparent;
+        transform: translate(0);
+    }
 
     .recipe {
         .header {
             @include flexible($direction: column, $alignment: center);
 
             .recipe-name {
+                margin: 0 30px;
                 text-align: center;
                 font-family: $primary-font;
                 font-weight: 600;
@@ -127,6 +127,7 @@
             }
 
             .recipe-photo {
+                border-radius: 50%;
                 width: 400px;
                 margin: 0 20px;
 
@@ -202,7 +203,7 @@
             margin: 10px 0;
             text-align: center;
 
-            .save-button {
+            .save-bottom-button {
                 @include reset-btn();
                 font-family: $primary-font;
                 font-size: 1rem;
@@ -220,5 +221,18 @@
                 }
             }
         }
+    }
+}
+
+.background {
+    z-index: -1;
+    @include fixed-positioning();
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &::after {
+        content: '';
+        @include fixed-positioning();
+        backdrop-filter: blur(6px);
     }
 }
