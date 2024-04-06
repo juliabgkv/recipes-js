@@ -52,7 +52,7 @@ searchForm.addEventListener('submit', e => {
 // ------- event handlers -------
 
 function openFormBtnClickHandler() {
-    document.body.style.overflow = 'hidden';
+    changeOverflow(false);
     backdrop.classList.add('active');
     searchForm.classList.add('active');
     setTimeout(() => searchInp.focus(), 100);
@@ -62,6 +62,7 @@ function closeForm() {
     if(burgerMenu.classList.contains('active')) {
         burgerMenuClickHandler();
     } else {
+        changeOverflow(true);
         document.body.style.overflow = 'visible';
         searchResult.innerHTML = '';
         searchForm.reset();
@@ -177,6 +178,10 @@ function burgerMenuClickHandler() {
     burgerMenu.classList.toggle('active');
     categoriesSection.classList.toggle('active');
     backdrop.classList.toggle('active');
+
+    let isOverflowVisible = true;
+    if(burgerMenu.classList.contains('active')) isOverflowVisible = false;
+    changeOverflow(isOverflowVisible);
 }
 
 function showMoreBtnClickHandler() {
@@ -292,4 +297,8 @@ function delay(fn, ms) {
 function showMoreLoader(isActive) {
     if(isActive) moreLoader.classList.add('active');
     else moreLoader.classList.remove('active');
+}
+
+function changeOverflow(isVisible) {
+    document.body.style.overflow = isVisible ? 'visible' : 'hidden';
 }
