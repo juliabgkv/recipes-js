@@ -80,6 +80,7 @@ function showAllSearchResultsHandler() {
 
         showLoader(true, loader);
         showMoreBtnDisplaying(true);
+        hideSearchResultMessage();
         recipesContainer.innerHTML = '';
 
         path = URL_PATHS.search;
@@ -145,7 +146,7 @@ function onCategoriesListClickHandler(e) {
         if(burgerMenu.classList.contains('active')) burgerMenuClickHandler();
 
         recipesContainer.innerHTML = '';
-        searchResMessage.classList.remove('active');
+        hideSearchResultMessage();
         showLoader(true, loader);
         showMoreBtnDisplaying(true);
 
@@ -234,6 +235,10 @@ function showSearchResultMessage(count, query) {
     searchResMessage.innerText = (count == 0) 
         ? `Nothing found on your query "${query}"...` 
         : `Found ${count} recipe(s) on your query "${query}": `;
+}
+
+function hideSearchResultMessage() {
+    searchResMessage.classList.remove('active');
 }
 
 function renderSearchResPreviewItem(recipe) {
