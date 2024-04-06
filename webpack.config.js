@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPartialsPlugin = require('html-webpack-partials-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CnameWebpackPlugin = require('cname-webpack-plugin');
 
 const mode = process.env.NODE_ENV || 'development';
 const devMode = mode === 'development';
@@ -45,8 +47,17 @@ module.exports = {
             template: './src/pages/saved/saved.html',
             chunks: ['saved']
         }),
+        new HtmlWebpackPartialsPlugin({
+            path: './src/partials/analytics.html',
+            template_filename: '*',
+            location: 'head',
+            priority: 'high'
+        }),
         new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css'
+        }),
+        new CnameWebpackPlugin({
+            domain: 'reciptoria.com',
         })
     ],
     module: {
