@@ -174,11 +174,17 @@
 }
 
 .categories {
-    margin: 10px 30px;
+    padding: 10px 30px;
+    height: $categories-desktop-height;
+
+    @media (max-width: 820px) {
+        height: $categories-tablet-height;
+    }
 
     @media (max-width: 675px) {
         z-index: 500;
-        padding-top: $tablet-topbar-height;
+        padding-top: $topbar-tablet-height;
+        height: auto;
         position: absolute;
         top: 0;
         width: 50%;
@@ -218,7 +224,7 @@
             cursor: pointer;
             transition: .15s ease-in;
 
-            @media (max-width: 815px) {
+            @media (max-width: 820px) {
                 padding: 5px 10px;
                 margin-bottom: 5px;
             }
@@ -237,7 +243,20 @@
 }
 
 .recipes {
+    min-height: calc(100vh - $topbar-desktop-height -  $categories-desktop-height - $footer-height);
     @include flexible($direction: column, $alignment: center);
+
+    @media (max-width: 820px) {
+        min-height: calc(100vh - $topbar-desktop-height -  $categories-tablet-height - $footer-height);
+    }
+
+    @media (max-width: 768px) {
+        min-height: calc(100vh - $topbar-tablet-height -  $categories-desktop-height - $footer-height);
+    }
+    
+    @media (max-width: 480px) {
+        min-height: calc(100vh - $topbar-mobile-height -  $categories-desktop-height - $footer-height);
+    }
 
     .search-result-message {
         display: none;

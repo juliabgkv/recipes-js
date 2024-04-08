@@ -17,14 +17,14 @@ body {
     padding: .8rem 1.5rem;
     box-shadow: $box-shadow;
     background-color: $light-color;
-    height: $desktop-topbar-height;
+    height: $topbar-desktop-height;
 
     @media (max-width: 768px) {
-        height: $tablet-topbar-height;
+        height: $topbar-tablet-height;
     }
     
     @media (max-width: 480px) {
-        height: $mobile-topbar-height;
+        height: $topbar-mobile-height;
     }
 
     @media (max-width: 410px) {
@@ -57,5 +57,41 @@ body {
                 height: 45px;
             }
         }
+    }
+}
+
+.footer {
+    font-family: $secondary-font;
+    color: $dark-color;
+    @include flexible($direction: column, $alignment: center, $justify: center);
+    background-color: $light-color;
+    box-shadow: $box-shadow;
+    height: $footer-height;
+
+    p:first-of-type {
+        margin-bottom: 5px;
+    }
+
+    .api-link,
+    .dev-link {
+        font-size: 1.1rem;
+        text-decoration: none;
+        color: $dark-color;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .api-link {
+        font-family: "Titillium Web", sans-serif;
+    }
+
+    .dev-link {
+        padding-right: 20px;
+        background-image: url(../../assets/github-logo.png);
+        background-repeat: no-repeat;
+        background-position: right;
+        background-size: 15px 15px;
     }
 }

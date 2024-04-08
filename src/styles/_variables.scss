@@ -12,9 +12,18 @@ $light-grey: #919191;
 
 $btn-size: 30px;
 $border-radius: 10px;
-$desktop-topbar-height: 95px;
-$tablet-topbar-height: 85px;
-$mobile-topbar-height: 75px;
 
 $border: 1px solid $light-grey;
 $box-shadow: 0px 0px 5px 0px rgb(209, 209, 209);
+
+// topbar height
+$topbar-desktop-height: 95px;
+$topbar-tablet-height: 85px;
+$topbar-mobile-height: 75px;
+
+// categories height
+$categories-desktop-height: 70px;
+$categories-tablet-height: 55px;
+
+// footer
+$footer-height: 90px;

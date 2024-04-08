@@ -9,6 +9,16 @@
 }
 
 .recipes {
+    min-height: calc(100vh - $topbar-desktop-height - $footer-height);
+
+    @media (max-width: 768px) {
+        min-height: calc(100vh - $topbar-tablet-height - $footer-height);
+    }
+    
+    @media (max-width: 480px) {
+        min-height: calc(100vh - $topbar-mobile-height - $footer-height);
+    }
+
     .section-title {
         font-family: $primary-font;
         text-align: center;
