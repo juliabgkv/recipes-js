@@ -4,7 +4,7 @@
 @import './save-recipe-btn';
 
 .recipes {
-    margin: 20px;
+    padding: 20px;
 
     &-container {
         max-width: 1200px;
@@ -46,6 +46,11 @@
                     border-radius: 50%;
                     width: 100%;
                     transition: .2s ease-in-out;
+
+                    @media (max-width: 768px) {
+                        border-radius: 0;
+                        transform: scale(1.3);
+                    }
                 }
             }
 
